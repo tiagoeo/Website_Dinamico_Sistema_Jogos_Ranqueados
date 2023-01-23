@@ -6,45 +6,51 @@
       </div>
       <div class="description">
         <div class="ui raised violet segment">
-            <form class="ui form">
-              <div class="field">
-                <label>Apelido</label>
-                <input type="text" name="apelidoCadastro" placeholder="Apelido">
-              </div>
-              <div class="field">
-                <label>Email</label>
-                <div class="two fields">
-                  <div class="field">
-                    <input type="text" name="emailCadastro" placeholder="Email">
-                  </div>
-                  <div class="field">
-                    <input type="text" placeholder="Confirmar email">
-                  </div>
+          <form class="ui form" id="formularioCadastro">
+            <div class="field" id="fieldUsuarioCadastro">
+              <label>Apelido</label>
+              <input type="text" placeholder="Apelido" name="usuarioCadastro" id="usuarioCadastro">
+              <div id="mensageUsuarioCadastro"></div>
+            </div>
+            <div class="field">
+              <label>Email</label>
+              <div class="two fields">
+                <div class="field" id="fieldEmailCadastro">
+                  <input type="text" placeholder="Email" name="emailCadastro" id="emailCadastro">
+                  <div id="mensageEmailCadastro"></div>
+                </div>
+                <div class="field" id="fieldEmail2Cadastro">
+                  <input type="text" placeholder="Confirmar email" name="email2Cadastro" id="email2Cadastro">
+                  <div id="mensageEmail2Cadastro"></div>
                 </div>
               </div>
-              <div class="field">
-                <label>Senha</label>
-                <div class="two fields">
-                  <div class="field">
-                    <input type="text" name="senhaCadastro" placeholder="senha">
-                  </div>
-                  <div class="field">
-                    <input type="text" name="senha2Cadastro" placeholder="repetir senha">
-                  </div>
+            </div>
+            <div class="field">
+              <label>Senha</label>
+              <div class="two fields">
+                <div class="field" id="fieldSenhaCadastro">
+                  <input type="password" placeholder="senha" name="senhaCadastro" id="senhaCadastro">
+                  <div id="mensageSenhaCadastro"></div>
+                </div>
+                <div class="field" id="fieldSenha2Cadastro">
+                  <input type="password" placeholder="repetir senha" name="senha2Cadastro" id="senha2Cadastro">
+                  <div id="mensageSenha2Cadastro"></div>
                 </div>
               </div>
-              <div class="field">
-                <div class="ui checkbox">
-                  <input type="checkbox" tabindex="0" class="hidden">
-                  <label>Aceito os termos e condições</label>
-                </div>
+            </div>
+            <div class="field" id="fieldCheckboxCadastro">
+              <div class="ui checkbox">
+                <input type="checkbox" id="checkboxCadastro">
+                <label>Aceito os termos e condições</label>
               </div>
-            </form>
+            </div>
+          </form>
+          <div id="mensageCadastro"></div>
         </div>
       </div>
       <div class="actions">
-        <div class="ui button">Cancelar</div>
-        <div class="ui positive button">Cadastrar</div>
+        <div class="ui cancel button" onclick="limparCadastro();">Cancelar</div>
+        <div class="ui button" id="btnCadastrar">Cadastrar</div>
       </div>
     </div>
 
