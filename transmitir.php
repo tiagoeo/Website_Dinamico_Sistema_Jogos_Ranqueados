@@ -100,19 +100,41 @@
             
             $senha = md5($senha2);
 
-            $novoCadastro = $novoCadastro->cadastroUsuarioVO($usuario, $email, $senha, $situacao);
+            $novaBuscaUsuarioEmail = $novoCadastro->buscaUsuarioEmailVO($email);
 
-            if($novoCadastro){
-                $returnNovoCadastro['cadastro'] = true;
-                $returnNovoCadastro = json_encode($returnNovoCadastro);
-                echo($returnNovoCadastro);
-                exit();
+            $novaBuscaUsuarioNome = $novoCadastro->buscaUsuarioNomeVO($usuario);
+
+            if ($novaBuscaUsuarioEmail == false && $novaBuscaUsuarioNome == false){
+                $retornoNovoCadastro = $novoCadastro->cadastroUsuarioVO($usuario, $email, $senha, $situacao);
+
+                if($retornoNovoCadastro){
+                    $novaBuscaUsuarioEmail = $novoCadastro->buscaUsuarioEmailVO($email);
+    
+                    if ($novaBuscaUsuarioEmail != false){
+                        $novoCadastro->vincularUsuarioGameVO($novaBuscaUsuarioEmail['idusuario'], 1, 0, '[0]');
+                    }
+    
+                    $returnJsonNovoCadastro['cadastro'] = true;
+                    $returnJsonNovoCadastro = json_encode($returnJsonNovoCadastro);
+                    echo($returnJsonNovoCadastro);
+                    exit();
+                }else{
+                    $returnJsonNovoCadastro['cadastro'] = false;
+                    $returnJsonNovoCadastro = json_encode($returnJsonNovoCadastro);
+                    echo($returnJsonNovoCadastro);
+                    exit();
+                }
             }else{
-                $returnNovoCadastro['cadastro'] = false;
-                $returnNovoCadastro = json_encode($returnNovoLogin);
-                echo($returnNovoCadastro);
+                $returnJsonNovoCadastro['cadastro'] = false;
+                $returnJsonNovoCadastro = json_encode($returnJsonNovoCadastro);
+                echo($returnJsonNovoCadastro);
                 exit();
             }
+
+
+            
+
+            
         }
     }else{
 		header("Location: index.php");

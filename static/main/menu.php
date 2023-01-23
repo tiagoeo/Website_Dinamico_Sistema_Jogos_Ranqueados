@@ -13,10 +13,12 @@
               </div>
             </div>
           </div>
-        <?php endif; ?>
-        <div class="right menu">
-          <div class="green item">
-              <div class="ui primary button" id="btnEntrar">Entrar</div>
-          </div>
+          <div class="right menu">
+            <a class="active positive item" href="logout.php">Logout</a>
         </div>
+        <?php else: ?>
+          <div class="right menu">
+            <a class="active blue item" id="btnLoginModal">Login</a>
+          </div>
+        <?php endif; ?>
       </div>

@@ -49,8 +49,43 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui cancel button" onclick="limparCadastro();">Cancelar</div>
+        <div class="ui cancel button" onclick="limparRegistros();">Cancelar</div>
         <div class="ui button" id="btnCadastrar">Cadastrar</div>
+      </div>
+    </div>
+
+    <div class="ui modal long" id="modalLogin">
+      <i class="close icon"></i>
+      <div class="header">
+        <i class="signup icon"></i>
+        Login
+      </div>
+      <div class="description">
+        <div class="ui raised violet segment">
+          <form class="ui form" id="formularioLoginMenu">
+            <div class="field" id="fieldUsuarioLoginMenu">
+              <label>Usuário</label>
+              <div class="ui left icon input">
+                  <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLoginMenu">
+                  <i class="user icon"></i>
+              </div>
+              <div id="mensageUsuarioLoginMenu"></div>
+            </div>
+            <div class="field" id="fieldSenhaLoginMenu">
+                <label>Senha</label>
+                <div class="ui left icon input">
+                    <input type="password" name="senhaLogin" id="senhaLoginMenu">
+                    <i class="lock icon"></i>
+                </div>
+                <div id="mensageSenhaLoginMenu"></div>
+            </div>
+          </form>
+          <div id="mensageLoginMenu"></div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui cancel button" onclick="limparRegistros();">Cancelar</div>
+        <div class="ui button" id="btnLoginMenu">Login</div>
       </div>
     </div>
 

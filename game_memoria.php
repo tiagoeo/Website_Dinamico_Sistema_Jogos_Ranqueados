@@ -3,7 +3,7 @@
     sec_session_start();
 
     $novoWebsiteVO = new websiteVO;
-    $pagina = 1;
+    $pagina = 2;
 
     $novoDadosWebsite = $novoWebsiteVO->dadosWebsiteVO();
     if (!$novoDadosWebsite){
@@ -13,7 +13,6 @@
     }
 
     $novoDadosPagina = $novoWebsiteVO->dadosPaginaVO($pagina);
-    $novoDadosGrid = $novoWebsiteVO->dadosGridVO(intval($novoDadosPagina['idpagina']));
 
 ?>
         <?php include_once(__DIR__.'/static/main/cabecalho.php');?>
@@ -21,6 +20,7 @@
         <title> <?php echo $novoDadosPagina['nome']; ?> </title>
         <meta name="description" content="<?php echo $novoDadosPagina['descricao']; ?>">
         <meta name="keywords" content="<?php echo $novoDadosPagina['palavraschave']; ?>">
+        <link href="static/css/game.css" rel="stylesheet">
         </head>
 
     <body>
@@ -137,56 +137,155 @@
                 <!-- // login -->
             <?php endif; ?>
 
-            <!-- Descrição Game -->
-            <?php foreach ($novoDadosGrid as $chave => $valor): ?>
-                <div class="ui vertical stripe segment"> 
-                    <div class="ui middle aligned stackable grid container">
-                        <div class="row"> 
-                            <div class="eight wide column"> 
-                                <h3 class="ui header"><?php echo $valor['titulo'];?></h3> 
-                                <p><?php echo $valor['descricao'];?></p>
+            <!-- GAME DA MEMÓRIA COM ICONES -->
+            <!-- Descrição -->
+            <div class="ui vertical stripe segment">
+                <div class="ui middle aligned stackable grid container">
+                    <div class="row">
+                        <div class="eight wide column">
+                            <h3 class="ui header">Jogo da memória</h3>
+                            <p>Este é um jogo da memória com icones com código fonte aberto e livre, desenvolvido em HTML5, CSS3, Javascript, Semantic UI e JQuery.</p>
+                            <h3 class="ui header">Informações e regras</h3>
+                            <ul>
+                                <li>Os botões 'Começar' e 'Sair', resetam as pontos adquiridos;</li>
+                                <li>O botão de 'Nova fase', cria um novo jogo e mantém os pontos atuais, mas caso pressionado antes de terminar a fase perde-se o bônus;</li>
+                                <li>Até 50 pontos, o tempo de memorizar os icones são de 4seg, bônus de 5 pontos em acertos sem erros, após o primeiro erro perde-se o bônus, mas não há penalidades em novos erros;</li>
+                                <li>A partir de 50 pontos, o bônus passa para 2 e o tempo para memorizar passa a 3seg, em caso de erro é perdido o bônus e descontado 1 ponto por cada erro;</li>
+                                <li>Depois dos 100 pontos, não há bônus, erros passam a descontar 2 pontos;</li>
+                                <li>Após 150 pontos, o tempo de memorizar é 2seg;</li>
+                            </ul>
+                        </div>
+                        <div class="six wide right floated column">
+                            <div class="ui fade reveal image">
+                                <img class="visible content" src="static/img/game_memoria.png" width="356" height="356">
+                                <img class="hidden content" src="https://github.com/tiagoeo/tiagoeo/blob/main/img/game_memoria.gif" width="356" height="356">
                             </div>
-                            <div class="eight wide right floated column"> 
-                                <!-- Classificação -->
-                                <p>Classificação</p>
-                                <div class="ui two column centered grid">
-                                    <div class="column">
-                                    <table class="ui attached table">
-                                        <thead>
-                                        <tr><th class="ten wide">Nome</th>
-                                        <th class="six wide">Pontos</th>
-                                        </tr></thead>
-                                        <tbody>
-                                            <?php $novoDadosRanque = $novoWebsiteVO->ranqueGeralVO($valor['titulo']); for ($i=0; $i < count($novoDadosRanque); $i++): ?>
-                                                <?php if ($i < 3): ?>
-                                                <tr>
-                                                    <td><?php echo $novoDadosRanque[$i]['nome'];?></td>
-                                                    <td><?php echo $novoDadosRanque[$i]['pontos'];?></td>
-                                                </tr>
-                                                <?php else: break; ?>
-                                                <?php endif; ?>
-                                            <?php endfor; ?>
-                                        </tbody>
-                                        <tfoot>
-                                        <tr><th>Total de jogadores</th>
-                                        <th><?php echo count($novoDadosRanque);?></th>
-                                        </tr></tfoot>
-                                    </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // Descrição -->
+            <!-- Pontuações -->
+            <div class="ui centered card">
+                <div class="content">
+                    <div class="center aligned header">
+                        <div class="ui two column centered grid">
+                            <div class="ui statistics">
+                                <div class="teal statistic">
+                                    <div class="value" id="pontos">
+                                        0
+                                    </div>
+                                    <div class="label">
+                                        Pontos
                                     </div>
                                 </div>
-                                <!-- // Classificação -->
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="center aligned column">
-                                <a class="ui huge button" href="<?php echo $valor['botaoLink'];?>" ><?php echo $valor['botaoNome'];?></a>
-                            </div>
-                        </div>
-                    </div> 
+                    </div>
                 </div>
-                <div class="ui section divider"></div>
-            <?php endforeach; ?>
-            <!-- // Descrição Game -->
+                <div class="extra content">
+                    <div class="center aligned author">
+                        <div class="ui indicating progress" data-value="0" data-total="6" id="gameProgresso">
+                            <div class="bar">
+                                <div class="progress"></div>
+                            </div>
+                            <div class="label">Progresso</div>
+                        </div>
+                    </div>
+                    <div id="gameBonus">
+                        <i class="circular star icon link" data-tooltip="Bônus de 5x" data-position="right center">
+                            <i class="smile outline icon"></i>
+                        </i>
+                    </div>
+                </div>
+            </div>
+            <!-- // Pontuações -->
+
+            <!-- Game -->
+            <div class="ui middle aligned stackable grid container">
+                <div class="ui four cards centered" id="btns">
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn0" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn1" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn2" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn3" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn4" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn5" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn6" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn7" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn8" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn9" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn10" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                    <div class="card">
+                        <button class="ui disabled icon button" id="btn11" name="btn">
+                            <i class="huge icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- // Game -->
+
+            <!-- Rodapé Game -->
+            <div class="ui two column centered grid" id="rodape">
+                <button class="ui massive labeled icon button" id="btnComecar">
+                    <i class="caret right icon"></i>
+                    Começar
+                </button>
+                <div class="ui massive buttons" id="btnExtra">
+                    <button class="ui button" id="btnNovaFase">
+                        Nova fase
+                    </button>
+                    <div class="or" data-text="ou"></div>
+                    <button class="ui button" id="btnSair">
+                        Sair
+                    </button>
+                </div>
+            </div>
+            <!-- // Rodapé Game -->
+            <!-- // GAME DA MEMÓRIA COM ICONES -->
 
         </main>
         <!-- // Main -->
@@ -205,7 +304,70 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+        <script type="text/javascript" src="static/js/game.js"></script>
         <script>
+            $("#btnExtra").hide();
+            
+            $("#btnComecar").click(function(){
+                iniciar('novo_jogo');
+            });
+
+            $("#btnNovaFase").click(function(){
+                iniciar('nova_fase');
+            });
+
+            $("#btnSair").click(function(){
+                resetGame('total');
+            });
+
+            $("#btn0").click(function(){
+                game('#btn0');
+            });
+
+            $("#btn1").click(function(){
+                game('#btn1');
+            });
+
+            $("#btn2").click(function(){
+                game('#btn2');
+            });
+
+            $("#btn3").click(function(){
+                game('#btn3');
+            });
+
+            $("#btn4").click(function(){
+                game('#btn4');
+            });
+
+            $("#btn5").click(function(){
+                game('#btn5');
+            });
+
+            $("#btn6").click(function(){
+                game('#btn6');
+            });
+
+            $("#btn7").click(function(){
+                game('#btn7');
+            });
+
+            $("#btn8").click(function(){
+                game('#btn8');
+            });
+
+            $("#btn9").click(function(){
+                game('#btn9');
+            });
+
+            $("#btn10").click(function(){
+                game('#btn10');
+            });
+
+            $("#btn11").click(function(){
+                game('#btn11');
+            });
+
             $("#btnCadastro").click(function(){
                 limparRegistros();
                 $("#modalCadastro").modal('show');

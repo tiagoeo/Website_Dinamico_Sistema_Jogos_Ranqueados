@@ -79,6 +79,38 @@
             }
         }
 
+        function buscaUsuarioEmailVO($email){
+            try{
+                $novaBuscaUsuarioEmailDAO = new websiteDAO;
+                
+                $retornoNovaBuscaUsuarioEmailDAO = $novaBuscaUsuarioEmailDAO->buscaUsuarioEmailDAO($email);
+
+                if ($retornoNovaBuscaUsuarioEmailDAO != false){
+                    return $retornoNovaBuscaUsuarioEmailDAO;
+                }else{
+                    return false;
+                }
+            }catch(Exception  $e){
+                return $e->getMessage();
+            }
+        }
+
+        function buscaUsuarioNomeVO($nome){
+            try{
+                $novaBuscaUsuarioNomeDAO = new websiteDAO;
+                
+                $retornoNovaBuscaUsuarioNomeDAO = $novaBuscaUsuarioNomeDAO->buscaUsuarioNomeDAO($nome);
+
+                if ($retornoNovaBuscaUsuarioNomeDAO != false){
+                    return $retornoNovaBuscaUsuarioNomeDAO;
+                }else{
+                    return false;
+                }
+            }catch(Exception  $e){
+                return $e->getMessage();
+            }
+        }
+
         function pontuacoesVO($email){
             try{
                 $novoPontuacoesDAO = new websiteDAO;
