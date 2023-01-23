@@ -1,7 +1,9 @@
 <?php
+	include(__DIR__.'/vo/websiteVO.php');
+    sec_session_start();
+
 	if($_SERVER['REQUEST_METHOD'] == 'POST') {
 		if(isset($_POST["usuarioLogin"]) && !empty($_POST["usuarioLogin"]) and isset($_POST["senhaLogin"]) && !empty($_POST["senhaLogin"])){
-			require_once(__DIR__.'/vo/websiteVO.php');
 			$novoLogin = new websiteVO;
 			
 			$usuario = $_POST['usuarioLogin'];
@@ -28,6 +30,10 @@
             $novoLogin = $novoLogin->loginVO($usuario, $senha);
 
             if($novoLogin){
+                $_SESSION['UID'] = $novoLogin['idusuario'];
+                $_SESSION['NOME'] = $novoLogin['nome'];
+                $_SESSION['EMAIL'] = $novoLogin['email'];
+                $_SESSION['STATUS'] = $novoLogin['situacao'];
                 $returnNovoLogin['login'] = true;
                 $returnNovoLogin = json_encode($returnNovoLogin);
                 echo($returnNovoLogin);
@@ -39,7 +45,6 @@
                 exit();
             }
         }else if(isset($_POST["usuarioCadastro"]) && !empty($_POST["usuarioCadastro"]) and isset($_POST["emailCadastro"]) && !empty($_POST["emailCadastro"]) and isset($_POST["email2Cadastro"]) && !empty($_POST["email2Cadastro"]) and isset($_POST["senhaCadastro"]) && !empty($_POST["senhaCadastro"]) and isset($_POST["senha2Cadastro"]) && !empty($_POST["senha2Cadastro"])){
-			require_once(__DIR__.'/vo/websiteVO.php');
 			$novoCadastro = new websiteVO;
 			
 			$usuario = $_POST['usuarioCadastro'];

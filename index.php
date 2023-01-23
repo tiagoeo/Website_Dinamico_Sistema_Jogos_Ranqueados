@@ -1,16 +1,6 @@
 <?php
 	include(__DIR__.'/vo/websiteVO.php');
-
-    function sec_session_start() {
-        $secure = true;
-        $httponly = true;
-
-        ini_set('session.use_only_cookies', 1);
-        $cookieParams = session_get_cookie_params();
-        session_set_cookie_params($cookieParams["lifetime"], $cookieParams["path"], $cookieParams["domain"], $secure, $httponly);
-        session_name('Website_Dinamico');
-        session_start();
-    }
+    sec_session_start();
 
     $novoWebsiteVO = new websiteVO;
     $pagina = 1;
@@ -39,50 +29,113 @@
 		</header>
         <!-- Main -->
         <main>
-            <!-- Login -->		
-            <div class="ui placeholder segment ui autumn leaf" id="uiLogin">
-                <div class="ui two column very relaxed stackable grid">
-                    <div class="column">
-                        <form class="ui form" id="formularioLogin">
-                            <div class="field" id="fieldUsuarioLogin">
-                                <label>Usuário</label>
-                                <div class="ui left icon input">
-                                    <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLogin">
-                                    <i class="user icon"></i>
+            <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
+                <!-- Minha conta -->		
+                <div class="ui placeholder segment ui autumn leaf" id="uiMinhaConta">
+                    <div class="ui two column very relaxed stackable grid">
+                        <div class="column">
+                            <form class="ui form" id="formularioAlterarSenha">
+                                <div class="field" id="fieldSenha1Atualizar">
+                                    <label>Nova senha</label>
+                                    <div class="ui left icon input disabled">
+                                        <input type="password" name="senha1Atualizar" id="senha1Atualizar">
+                                        <i class="lock icon"></i>
+                                    </div>
+                                    <div id="mensageSenha1Atualizar">
+                                    </div>
                                 </div>
-                                <div id="mensageUsuarioLogin">
+                                <div class="field" id="fieldSenha2Atualizar">
+                                    <label>Repetir nova senha</label>
+                                    <div class="ui left icon input disabled">
+                                        <input type="password" name="senha2Atualizar" id="senha2Atualizar">
+                                        <i class="lock icon"></i>
+                                    </div>
+                                    <div id="mensageSenha2Atualizar">
+                                    </div>
+                                    <div id="mensageSenhasAtualizar">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field" id="fieldSenhaLogin">
-                                <label>Senha</label>
-                                <div class="ui left icon input">
-                                    <input type="password" name="senhaLogin" id="senhaLogin">
-                                    <i class="lock icon"></i>
+                                <div class="ui blue submit button" id="btnSenhaAtualizar">
+                                    Atualizar
                                 </div>
-                                <div id="mensageSenhaLogin">
-                                </div>
-                                <div id="mensageLogin">
-                                </div>
-                            </div>
-                            <div class="ui blue submit button" id="btnLogin">
-                                Login
-                            </div>
-                        </form>
-
-                    </div>
-                    <div class="middle aligned column">
-                        <div class="ui big button" id="btnCadastro">
-                            <i class="signup icon"></i>
-                            Cadastro
+                            </form>
                         </div>
-                        
+                        <div class="middle aligned column">
+                            <!-- Pontuações -->
+                            <p>Minhas pontuações</p>
+                            <div class="ui two column centered grid">
+                                <div class="column">
+                                <table class="ui attached table">
+                                    <thead>
+                                    <tr><th class="ten wide">Game</th>
+                                    <th class="six wide">Pontos</th>
+                                    </tr></thead>
+                                    <tbody>
+                                        <?php $novoDadosRanqueUsuario = $novoWebsiteVO->pontuacoesVO($_SESSION['EMAIL']); foreach ($novoDadosRanqueUsuario as $chave => $valor): ?>
+                                            <tr>
+                                                <td><?php echo $valor['nome'];?></td>
+                                                <td><?php echo $valor['pontos'];?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr><th>Total de Jogos</th>
+                                    <th><?php echo count($novoDadosRanqueUsuario);?></th>
+                                    </tr></tfoot>
+                                </table>
+                                </div>
+                            </div>
+                            <!-- // Pontuações -->
+                        </div>
+                    </div>
+                    <div class="ui vertical divider"></div>
+                </div>
+                <!-- // Minha conta -->
+            <?php else: ?>
+                <!-- Login -->		
+                <div class="ui placeholder segment ui autumn leaf" id="uiLogin">
+                    <div class="ui two column very relaxed stackable grid">
+                        <div class="column">
+                            <form class="ui form" id="formularioLogin">
+                                <div class="field" id="fieldUsuarioLogin">
+                                    <label>Usuário</label>
+                                    <div class="ui left icon input">
+                                        <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLogin">
+                                        <i class="user icon"></i>
+                                    </div>
+                                    <div id="mensageUsuarioLogin">
+                                    </div>
+                                </div>
+                                <div class="field" id="fieldSenhaLogin">
+                                    <label>Senha</label>
+                                    <div class="ui left icon input">
+                                        <input type="password" name="senhaLogin" id="senhaLogin">
+                                        <i class="lock icon"></i>
+                                    </div>
+                                    <div id="mensageSenhaLogin">
+                                    </div>
+                                    <div id="mensageLogin">
+                                    </div>
+                                </div>
+                                <div class="ui blue submit button" id="btnLogin">
+                                    Login
+                                </div>
+                            </form>
+                        </div>
+                        <div class="middle aligned column">
+                            <div class="ui big button" id="btnCadastro">
+                                <i class="signup icon"></i>
+                                Cadastro
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="ui vertical divider">
+                        Ou
                     </div>
                 </div>
-                <div class="ui vertical divider">
-                    Ou
-                </div>
-            </div>
-            <!-- // login -->
+                <!-- // login -->
+            <?php endif; ?>
 
             <!-- Descrição Game -->
             <?php foreach ($novoDadosGrid as $chave => $valor): ?>

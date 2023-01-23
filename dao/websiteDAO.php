@@ -173,7 +173,7 @@
 
                 $pesquisar->execute();
 
-                $pesquisar = $pesquisar->fetchAll();
+                $pesquisar = $pesquisar->fetch();
 
                 if (isset($pesquisar) and $pesquisar != false){
                     return $pesquisar;
@@ -194,7 +194,7 @@
                     return false;
                 }
 
-                $pesquisar = "SELECT usuarios.idusuario, pontuacoes.idpontuacoes, pontuacoes.idgame, pontuacoes.pontos, pontuacoes.extras FROM usuarios INNER JOIN pontuacoes ON usuarios.idusuario = pontuacoes.idusuario WHERE email = :param1;";
+                $pesquisar = "SELECT usuarios.idusuario, pontuacoes.idpontuacoes, pontuacoes.idgame, pontuacoes.pontos, pontuacoes.extras, games.nome FROM usuarios INNER JOIN pontuacoes ON usuarios.idusuario = pontuacoes.idusuario INNER JOIN games ON pontuacoes.idgame = games.idgame WHERE email = :param1;";
 
                 $pesquisar = $this->pdo->prepare($pesquisar);
                 
