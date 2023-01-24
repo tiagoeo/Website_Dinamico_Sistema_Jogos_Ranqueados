@@ -129,12 +129,31 @@
                 $returnJsonNovoCadastro = json_encode($returnJsonNovoCadastro);
                 echo($returnJsonNovoCadastro);
                 exit();
+            }   
+        }else if(isset($_POST["buscaPontuacoes"]) && !empty($_POST["buscaPontuacoes"])){
+			$novaBusca = new websiteVO;
+            $email = $_POST['buscaPontuacoes'];
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $resultado['pontuacoes'] = null;
+				$resultado = json_encode($resultado);
+				echo($resultado);
+				exit();
+			}
+
+            $novaBuscaPontuacoes = $novaBusca->pontuacoesVO($email);
+
+            if ($novaBuscaPontuacoes != false){    
+                $novaBuscaPontuacoes['pontuacoes'] = true;
+                $novaBuscaPontuacoes = json_encode($novaBuscaPontuacoes);
+                echo($novaBuscaPontuacoes);
+                exit();
+            }else{
+                $returnJsonPontuacoes['pontuacoes'] = false;
+                $returnJsonPontuacoes = json_encode($returnJsonPontuacoes);
+                echo($returnJsonPontuacoes);
+                exit();
             }
-
-
-            
-
-            
         }
     }else{
 		header("Location: index.php");

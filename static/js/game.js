@@ -173,10 +173,10 @@ function resetGame(tp){
     switch (tp){
       case 'novo_jogo':
         // - Limpar variáveis.
-        pontos = 0;
+        //pontos = 0;
         erros = 0;
         acertos = 0;
-        $('#pontos').html(parseInt(pontos));
+        //$('#pontos').html(parseInt(pontos));
         subEDButtons(null, 'resetClique');
         $('#gameProgresso').progress('reset');
 
@@ -204,10 +204,10 @@ function resetGame(tp){
         break;
       case 'total':
         // - Limpar variáveis.
-        pontos = 0;
+        //pontos = 0;
         erros = 0;
         acertos = 0;
-        $('#pontos').html(parseInt(pontos));
+        //$('#pontos').html(parseInt(pontos));
         subEDButtons(null, 'resetClique');
         $('#gameProgresso').progress('reset');
 

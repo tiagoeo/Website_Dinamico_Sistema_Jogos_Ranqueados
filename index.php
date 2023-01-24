@@ -70,18 +70,14 @@
                                     <tr><th class="ten wide">Game</th>
                                     <th class="six wide">Pontos</th>
                                     </tr></thead>
-                                    <tbody>
-                                        <?php $novoDadosRanqueUsuario = $novoWebsiteVO->pontuacoesVO($_SESSION['EMAIL']); foreach ($novoDadosRanqueUsuario as $chave => $valor): ?>
-                                            <tr>
-                                                <td><?php echo $valor['nome'];?></td>
-                                                <td><?php echo $valor['pontos'];?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                    <tbody id="minhasPontuacoes">
                                     </tbody>
-                                    <tfoot>
-                                    <tr><th>Total de Jogos</th>
-                                    <th><?php echo count($novoDadosRanqueUsuario);?></th>
-                                    </tr></tfoot>
+                                    <tfoot id="meuTotalJogos">
+                                        <tr>
+                                            <th>Total de Jogos</th>
+                                            <th>0</th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                                 </div>
                             </div>
@@ -468,6 +464,45 @@
 					});
 				}		
 			}
+
+            function submitMinhasPontuacoes() {
+                var dados = {"buscaPontuacoes": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['EMAIL']);} ?>'};
+                $.ajax({ 
+                    url: "transmitir.php",
+                    data: dados,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function(retorno){
+                        if (retorno.pontuacoes == true){
+                            minhasPontuacoes = retorno;
+                            var totalJogos = Object.keys(retorno).length -1;
+
+                            for(i = 0; i <= totalJogos; i++){
+                                if (typeof retorno[i] !== 'undefined'){
+                                    $('#minhasPontuacoes').html('<tr><td>'+retorno[i].nome+'</td><td>'+retorno[i].pontos+'</td></tr>');
+                                }
+                            }
+
+                            $('#meuTotalJogos').html('<tr><th>Total de Jogos</th><th>'+totalJogos+'</th></tr>');
+                        }else{
+                            $('#meuTotalJogos').html('<tr><th>Falha ao buscar informações.</th></tr>');
+                        }
+                    },
+                    beforeSend: function() { 
+                        $('#minhasPontuacoes').html('<div class="ui active loader"></div>');
+                    },
+                    error: function(e) {
+                        $('#meuTotalJogos').html('<tr><th>Erro: ao buscar informações.</th></tr>');
+                    }
+                });
+			}
+
+            <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
+            $(window).on("load", function() {
+				submitMinhasPontuacoes();
+			});
+            <?php endif ?>	
         </script>
     </body>
 </html>
