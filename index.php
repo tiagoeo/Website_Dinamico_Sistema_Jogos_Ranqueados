@@ -3,6 +3,8 @@
     sec_session_start();
 
     $novoWebsiteVO = new websiteVO;
+    $novoDadosPagina;
+    $novoDadosGrid;
     $pagina = 1;
 
     $novoDadosWebsite = $novoWebsiteVO->dadosWebsiteVO();
@@ -10,10 +12,18 @@
         $novoDadosWebsite['nome'] = 'Falha no acesso ao banco de dados, entre em contato com o suporte';
         $novoDadosWebsite['telefone'] = '91999999999';
         $novoDadosWebsite['manutencao'] = '1';
+
+        $novoDadosPagina['nome'] = 'Modo manutenção';
+        $novoDadosPagina['descricao'] = 'Website dinâmico em modo manutenção';
+        $novoDadosPagina['palavraschave'] = 'Site em manutenção';
+
+        $novoDadosGrid = false;
+    }else{
+        $novoDadosPagina = $novoWebsiteVO->dadosPaginaVO($pagina);
+        $novoDadosGrid = $novoWebsiteVO->dadosGridVO(intval($novoDadosPagina['idpagina']));
     }
 
-    $novoDadosPagina = $novoWebsiteVO->dadosPaginaVO($pagina);
-    $novoDadosGrid = $novoWebsiteVO->dadosGridVO(intval($novoDadosPagina['idpagina']));
+
 
 ?>
         <?php include_once(__DIR__.'/static/main/cabecalho.php');?>
@@ -29,160 +39,223 @@
 		</header>
         <!-- Main -->
         <main>
-            <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
-                <!-- Minha conta -->		
-                <div class="ui placeholder segment ui autumn leaf" id="uiMinhaConta">
-                    <div class="ui two column very relaxed stackable grid">
-                        <div class="column">
-                            <form class="ui form" id="formularioAlterarSenha">
-                                <div class="field" id="fieldSenha1Atualizar">
-                                    <label>Nova senha</label>
-                                    <div class="ui left icon input disabled">
-                                        <input type="password" name="senha1Atualizar" id="senha1Atualizar">
-                                        <i class="lock icon"></i>
+            <?php if ($novoDadosWebsite['manutencao'] != '1'): ?>
+                <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
+                    <!-- Minha conta -->		
+                    <div class="ui placeholder segment ui autumn leaf" id="uiMinhaConta">
+                        <div class="ui two column very relaxed stackable grid">
+                            <div class="column">
+                                <form class="ui form" id="formularioAlterarSenha">
+                                    <div class="field" id="fieldSenha1Atualizar">
+                                        <label>Nova senha</label>
+                                        <div class="ui left icon input disabled">
+                                            <input type="password" name="senha1Atualizar" id="senha1Atualizar">
+                                            <i class="lock icon"></i>
+                                        </div>
+                                        <div id="mensageSenha1Atualizar">
+                                        </div>
                                     </div>
-                                    <div id="mensageSenha1Atualizar">
+                                    <div class="field" id="fieldSenha2Atualizar">
+                                        <label>Repetir nova senha</label>
+                                        <div class="ui left icon input disabled">
+                                            <input type="password" name="senha2Atualizar" id="senha2Atualizar">
+                                            <i class="lock icon"></i>
+                                        </div>
+                                        <div id="mensageSenha2Atualizar">
+                                        </div>
+                                        <div id="mensageSenhasAtualizar">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="field" id="fieldSenha2Atualizar">
-                                    <label>Repetir nova senha</label>
-                                    <div class="ui left icon input disabled">
-                                        <input type="password" name="senha2Atualizar" id="senha2Atualizar">
-                                        <i class="lock icon"></i>
+                                    <div class="ui blue submit button disabled" id="btnSenhaAtualizar">
+                                        Atualizar
                                     </div>
-                                    <div id="mensageSenha2Atualizar">
-                                    </div>
-                                    <div id="mensageSenhasAtualizar">
-                                    </div>
-                                </div>
-                                <div class="ui blue submit button disabled" id="btnSenhaAtualizar">
-                                    Atualizar
-                                </div>
-                            </form>
-                        </div>
-                        <div class="middle aligned column">
-                            <!-- Pontuações -->
-                            <p>Minhas pontuações</p>
-                            <div class="ui two column centered grid">
-                                <div class="column">
-                                <table class="ui attached table">
-                                    <thead>
-                                    <tr><th class="ten wide">Game</th>
-                                    <th class="six wide">Pontos</th>
-                                    </tr></thead>
-                                    <tbody id="minhasPontuacoes">
-                                    </tbody>
-                                    <tfoot id="meuTotalJogos">
-                                        <tr>
-                                            <th>Total de Jogos</th>
-                                            <th>0</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                                </div>
+                                </form>
                             </div>
-                            <!-- // Pontuações -->
-                        </div>
-                    </div>
-                    <div class="ui vertical divider"></div>
-                </div>
-                <!-- // Minha conta -->
-            <?php else: ?>
-                <!-- Login -->		
-                <div class="ui placeholder segment ui autumn leaf" id="uiLogin">
-                    <div class="ui two column very relaxed stackable grid">
-                        <div class="column">
-                            <form class="ui form" id="formularioLogin">
-                                <div class="field" id="fieldUsuarioLogin">
-                                    <label>Usuário</label>
-                                    <div class="ui left icon input">
-                                        <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLogin">
-                                        <i class="user icon"></i>
-                                    </div>
-                                    <div id="mensageUsuarioLogin">
-                                    </div>
-                                </div>
-                                <div class="field" id="fieldSenhaLogin">
-                                    <label>Senha</label>
-                                    <div class="ui left icon input">
-                                        <input type="password" name="senhaLogin" id="senhaLogin">
-                                        <i class="lock icon"></i>
-                                    </div>
-                                    <div id="mensageSenhaLogin">
-                                    </div>
-                                    <div id="mensageLogin">
-                                    </div>
-                                </div>
-                                <div class="ui blue submit button" id="btnLogin">
-                                    Login
-                                </div>
-                            </form>
-                        </div>
-                        <div class="middle aligned column">
-                            <div class="ui big button" id="btnCadastro">
-                                <i class="signup icon"></i>
-                                Cadastro
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div class="ui vertical divider">
-                        Ou
-                    </div>
-                </div>
-                <!-- // login -->
-            <?php endif; ?>
-
-            <!-- Descrição Game -->
-            <?php foreach ($novoDadosGrid as $chave => $valor): ?>
-                <div class="ui vertical stripe segment"> 
-                    <div class="ui middle aligned stackable grid container">
-                        <div class="row"> 
-                            <div class="eight wide column"> 
-                                <h3 class="ui header"><?php echo $valor['titulo'];?></h3> 
-                                <p><?php echo $valor['descricao'];?></p>
-                            </div>
-                            <div class="eight wide right floated column"> 
-                                <!-- Classificação -->
-                                <p>Classificação</p>
+                            <div class="middle aligned column">
+                                <!-- Pontuações -->
+                                <p>Minhas pontuações</p>
                                 <div class="ui two column centered grid">
                                     <div class="column">
                                     <table class="ui attached table">
                                         <thead>
-                                        <tr><th class="ten wide">Nome</th>
+                                        <tr><th class="ten wide">Game</th>
                                         <th class="six wide">Pontos</th>
                                         </tr></thead>
-                                        <tbody>
-                                            <?php $novoDadosRanque = $novoWebsiteVO->ranqueGeralVO($valor['titulo']); for ($i=0; $i < count($novoDadosRanque); $i++): ?>
-                                                <?php if ($i < 3): ?>
-                                                <tr>
-                                                    <td><?php echo $novoDadosRanque[$i]['nome'];?></td>
-                                                    <td><?php echo $novoDadosRanque[$i]['pontos'];?></td>
-                                                </tr>
-                                                <?php else: break; ?>
-                                                <?php endif; ?>
-                                            <?php endfor; ?>
+                                        <tbody id="minhasPontuacoes">
                                         </tbody>
-                                        <tfoot>
-                                        <tr><th>Total de jogadores</th>
-                                        <th><?php echo count($novoDadosRanque);?></th>
-                                        </tr></tfoot>
+                                        <tfoot id="meuTotalJogos">
+                                            <tr>
+                                                <th>Total de Jogos</th>
+                                                <th>0</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                     </div>
                                 </div>
-                                <!-- // Classificação -->
+                                <!-- // Pontuações -->
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="center aligned column">
-                                <a class="ui huge button" href="<?php echo $valor['botaoLink'];?>" ><?php echo $valor['botaoNome'];?></a>
+                        <div class="ui vertical divider"></div>
+                    </div>
+                    <!-- // Minha conta -->
+                <?php else: ?>
+                    <!-- Login -->		
+                    <div class="ui placeholder segment ui autumn leaf" id="uiLogin">
+                        <div class="ui two column very relaxed stackable grid">
+                            <div class="column">
+                                <form class="ui form" id="formularioLogin">
+                                    <div class="field" id="fieldUsuarioLogin">
+                                        <label>Usuário</label>
+                                        <div class="ui left icon input">
+                                            <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLogin">
+                                            <i class="user icon"></i>
+                                        </div>
+                                        <div id="mensageUsuarioLogin">
+                                        </div>
+                                    </div>
+                                    <div class="field" id="fieldSenhaLogin">
+                                        <label>Senha</label>
+                                        <div class="ui left icon input">
+                                            <input type="password" name="senhaLogin" id="senhaLogin">
+                                            <i class="lock icon"></i>
+                                        </div>
+                                        <div id="mensageSenhaLogin">
+                                        </div>
+                                        <div id="mensageLogin">
+                                        </div>
+                                    </div>
+                                    <div class="ui blue submit button" id="btnLogin">
+                                        Login
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="middle aligned column">
+                                <div class="ui big button" id="btnCadastro">
+                                    <i class="signup icon"></i>
+                                    Cadastro
+                                </div>
+                                
                             </div>
                         </div>
-                    </div> 
-                </div>
-                <div class="ui section divider"></div>
-            <?php endforeach; ?>
-            <!-- // Descrição Game -->
+                        <div class="ui vertical divider">
+                            Ou
+                        </div>
+                    </div>
+                    <!-- // login -->
+                <?php endif; ?>
+
+                <!-- Descrição Game -->
+                <?php if ($novoDadosGrid != false): ?>
+                    <?php foreach ($novoDadosGrid as $chave => $valor): ?>
+                        <div class="ui vertical stripe segment"> 
+                            <div class="ui middle aligned stackable grid container">
+                                <div class="row"> 
+                                    <div class="eight wide column"> 
+                                        <h3 class="ui header"><?php echo $valor['titulo'];?></h3> 
+                                        <p><?php echo $valor['descricao'];?></p>
+                                    </div>
+                                    <div class="eight wide right floated column"> 
+                                        <!-- Classificação -->
+                                        <p>Classificação</p>
+                                        <div class="ui two column centered grid">
+                                            <div class="column">
+                                            <table class="ui attached table">
+                                                <thead>
+                                                <tr><th class="ten wide">Nome</th>
+                                                <th class="six wide">Pontos</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                    <?php $novoDadosRanque = $novoWebsiteVO->ranqueGeralVO($valor['titulo']); for ($i=0; $i < count($novoDadosRanque); $i++): ?>
+                                                        <?php if ($i < 3): ?>
+                                                        <tr>
+                                                            <td><?php echo $novoDadosRanque[$i]['nome'];?></td>
+                                                            <td><?php echo $novoDadosRanque[$i]['pontos'];?></td>
+                                                        </tr>
+                                                        <?php else: break; ?>
+                                                        <?php endif; ?>
+                                                    <?php endfor; ?>
+                                                </tbody>
+                                                <tfoot>
+                                                <tr><th>Total de jogadores</th>
+                                                <th><?php echo count($novoDadosRanque);?></th>
+                                                </tr></tfoot>
+                                            </table>
+                                            </div>
+                                        </div>
+                                        <!-- // Classificação -->
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="center aligned column">
+                                        <a class="ui huge button" href="<?php echo $valor['botaoLink'];?>" ><?php echo $valor['botaoNome'];?></a>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        <div class="ui section divider"></div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <!-- // Descrição Game -->
+            <?php else: ?>
+                <h2 class="ui center aligned icon header">
+                    <i class="circular settings icon"></i>
+                    Modo Manutenção
+                </h2>
+
+                <?php if ($testeDadosWebsite = $novoWebsiteVO->dadosWebsiteVO() != false):  ?>
+                    <div class="ui grid center aligned">
+                        <div class="eight wide column">
+                            <div class="ui segment">
+                            <p> Webite em manutenção - contate o administrador para mais informações.</p>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="ui grid center aligned">
+                        <div class="eight wide column">
+                            <table class="ui celled table">
+                                <thead>
+                                    <tr>
+                                        <th>Sevidor</th>
+                                        <th class="ui center aligned">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr <?php echo('class="positive"') ?>>
+                                        <td>PHP</td>
+                                        <td class="ui center aligned"><i class="icon checkmark"></i>OK - Versão: <?php echo(phpversion()); ?></td>
+                                    </tr>
+                                    <tr class="positive">
+                                        <td>CSS3</td>
+                                        <td class="ui center aligned"><i class="icon checkmark"></i>OK</td>
+                                    </tr>
+                                    <tr class="positive">
+                                        <td>Javascript</td>
+                                        <td class="ui center aligned"><i class="icon checkmark"></i>OK</td>
+                                    </tr>
+                                    <?php if ($testeDadosWebsite = $novoWebsiteVO->dadosWebsiteVO() == false):  ?>
+                                    <tr class="negative">
+                                        <td>Banco de dados</td>
+                                        <td class="ui center aligned">
+                                            <i class="icon close"></i>
+                                            Falha
+                                        </td>
+                                    </tr>
+                                    <?php elseif ($novoDadosWebsite['manutencao'] == '1'): ?>
+                                    <tr class="positive">
+                                        <td>Banco de dados</td>
+                                        <td class="ui center aligned">
+                                            <i class="icon checkmark"></i>
+                                            OK
+                                        </td>
+                                    </tr>
+                                    <?php endif;?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <div>
+                <?php endif; ?>   
+            <?php endif; ?>
 
         </main>
         <!-- // Main -->
