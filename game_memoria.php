@@ -266,16 +266,55 @@
 
             <!-- Rodapé Game -->
             <div class="ui two column centered grid" id="rodape">
-                <button class="ui massive labeled icon button" id="btnComecar">
+                <div class="ui massive buttons" id="btnModoLR">
+                    <button class="ui button" id="btnModoLivre">
+                        Modo Livre
+                    </button>
+                    <div class="or" data-text="ou"></div>
+                    <button class="ui button" id="btnModoRanqueado">
+                        Modo Ranqueado
+                    </button>
+                </div>
+                <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
+                <div class="ui massive buttons" id="btnModoRS">
+                    <button class="ui button" id="btnNovaFaseRanqueado">
+                        Nova Fase
+                    </button>
+                    <div class="or" data-text="ou"></div>
+                    <button class="ui button" id="btnSairModo1">
+                        Sair
+                    </button>
+                </div>
+                <div class="ui massive buttons disabled" id="btnModoVS">
+                    <button class="ui button" id="btnVincularRanqueado">
+                        Vincular
+                    </button>
+                    <div class="or" data-text="ou"></div>
+                    <button class="ui button" id="btnSairModo2">
+                        Sair
+                    </button>
+                </div>
+                <?php else: ?>
+                <div class="ui massive buttons" id="btnModoLS">
+                    <button class="ui button" id="btnLoginModal2">
+                        Necessário Login
+                    </button>
+                    <div class="or" data-text="ou"></div>
+                    <button class="ui button" id="btnSairModo3">
+                        Sair
+                    </button>
+                </div>
+                <?php endif;?>
+                <!-- <button class="ui massive labeled icon button" id="btnComecar">
                     <i class="caret right icon"></i>
                     Começar
-                </button>
-                <div class="ui massive buttons" id="btnExtra">
-                    <button class="ui button" id="btnNovaFase">
+                </button> -->
+                <div class="ui massive buttons" id="btnModoFS">
+                    <button class="ui button" id="btnNovaFaseLivre">
                         Nova fase
                     </button>
                     <div class="or" data-text="ou"></div>
-                    <button class="ui button" id="btnSair">
+                    <button class="ui button" id="btnSairModo4">
                         Sair
                     </button>
                 </div>
@@ -303,17 +342,35 @@
         <script type="text/javascript" src="static/js/game.js"></script>
         <script>
             var minhasPontuacoes;
-            $("#btnExtra").hide();
+            subEDButtons(null, 'modoMenuLivreOuRanqueado');
+
             
-            $("#btnComecar").click(function(){
-                iniciar('novo_jogo');
+            $("#btnModoLivre").click(function(){
+                iniciar('novo_jogo_livre');
             });
 
-            $("#btnNovaFase").click(function(){
-                iniciar('nova_fase');
+            $("#btnModoRanqueado").click(function(){
+                iniciar('novo_jogo_ranqueado');
             });
 
-            $("#btnSair").click(function(){
+            $("#btnNovaFaseLivre").click(function(){
+                iniciar('nova_fase_livre');
+            });
+
+            $("#btnNovaFaseRanqueado").click(function(){
+                iniciar('nova_fase_ranqueado');
+            });
+
+            $("#btnSairModo1").click(function(){
+                resetGame('total');
+            });
+            $("#btnSairModo2").click(function(){
+                resetGame('total');
+            });
+            $("#btnSairModo3").click(function(){
+                resetGame('total');
+            });
+            $("#btnSairModo4").click(function(){
                 resetGame('total');
             });
 

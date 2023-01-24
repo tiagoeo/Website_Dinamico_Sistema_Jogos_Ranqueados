@@ -75,37 +75,12 @@ function game(jogada){
     $('#pontos').html(parseInt(pontos));
 }
 
-// - Atualiza o bônus de pontos e front-end.
-function gameBonus(bn){
-    switch (bn) {
-      case 1:
-        $('#gameBonus').html('');
-        break;
-      case 2:
-        $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 2x" data-position="right center"><i class="smile outline icon"></i></i>');
-        break;
-      case 3:
-        $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 3x" data-position="right center"><i class="smile outline icon"></i></i>');
-        break;
-      case 4:
-        $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 4x" data-position="right center"><i class="smile outline icon"></i></i>');
-        break;
-      case 5:
-        $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 5x" data-position="right center"><i class="smile outline icon"></i></i>');
-        break;
-    
-      default:
-        bonus = bn;
-        break;
-    }
-}
-
 // - Inicializa nova fase ou um jogo novo.
 function iniciar(nf){
-    if (nf == 'novo_jogo'){
+    if (nf == 'novo_jogo_livre'){
       seg = 1;
       subRelogio(nf);
-    }else if (nf == 'nova_fase'){
+    }else if (nf == 'nova_fase_livre'){
       seg = 1;
       subRelogio(nf);
     }else if (nf == 'mostrar_fase'){
@@ -142,41 +117,15 @@ function iniciar(nf){
     }
 }
 
-// - Criador de fase aleatória.
-function novaFase(){
-    // - Escolhe 6 icones aleatórios entre 10 tipos, duplica-os em um vetor do mapa.
-    var icone;
-    while (mapa.length < 11){
-      icone = Math.floor(Math.random() * 10);
-      if (mapa.indexOf(icone) == -1){
-        mapa.push(icone, icone);
-      }
-    }
-    
-    // - Permutar vetor do mapa.
-    shuffle(mapa);
-
-    function shuffle(array) {
-      var m = array.length, t, i;
-      while (m) {
-        i = Math.floor(Math.random() * m--);
-        t = array[m];
-        array[m] = array[i];
-        array[i] = t;
-      }
-      return array;
-    }
-}
-
 // - Reinicia front-end.
 function resetGame(tp){
     switch (tp){
-      case 'novo_jogo':
+      case 'novo_jogo_livre':
         // - Limpar variáveis.
-        //pontos = 0;
+        pontos = 0;
         erros = 0;
         acertos = 0;
-        //$('#pontos').html(parseInt(pontos));
+        $('#pontos').html(parseInt(pontos));
         subEDButtons(null, 'resetClique');
         $('#gameProgresso').progress('reset');
 
@@ -185,10 +134,7 @@ function resetGame(tp){
         subEDButtons(null, 'allAddHtmlIconHuge');
         subEDButtons(null, 'allRemoveClassPP');
 
-        // - Padrão botões do rodapé.
-        $('#btnNovaFase').html('<i class="caret right icon"></i> Nova fase');
-
-      case 'nova_fase':
+      case 'nova_fase_livre':
         // - Limpar variáveis.
         erros = 0;
         subEDButtons(null, 'resetClique');
@@ -198,16 +144,13 @@ function resetGame(tp){
         subEDButtons(null, 'allAddClassDisable');
         subEDButtons(null, 'allAddHtmlIconHuge');
         subEDButtons(null, 'allRemoveClassPP');
-
-        // - Padrão botões do rodapé.
-        $("#btnExtra").show();
         break;
       case 'total':
         // - Limpar variáveis.
-        //pontos = 0;
+        pontos = 0;
         erros = 0;
         acertos = 0;
-        //$('#pontos').html(parseInt(pontos));
+        $('#pontos').html(parseInt(pontos));
         subEDButtons(null, 'resetClique');
         $('#gameProgresso').progress('reset');
 
@@ -217,52 +160,11 @@ function resetGame(tp){
         subEDButtons(null, 'allRemoveClassPP');
 
         // - Padrão botões do rodapé.
-        $("#btnExtra").hide();
-        $('#btnNovaFase').html('<i class="caret right icon"></i> Nova fase');
-        $("#btnComecar").show();
-        $('#btnComecar').html('<i class="caret right icon"></i> Começar');
-        break;
-    }
-}
-
-// - Lista de icones.
-function subIcon(ic){
-    switch (ic){
-      case 0:
-        return '<i class="huge headphones icon"></i>';
-        break;
-      case 1:
-        return '<i class="huge rss square icon"></i>';
-        break;
-      case 2:
-        return '<i class="huge music icon"></i>';
-        break;
-      case 3:
-        return '<i class="huge video icon"></i>';
-        break;
-      case 4:
-        return '<i class="huge bullhorn icon"></i>';
-        break;
-      case 5:
-        return '<i class="huge coffee icon"></i>';
-        break;
-      case 6:
-        return '<i class="huge calculator icon"></i>';
-        break;
-      case 7:
-        return '<i class="huge book icon"></i>';
-        break;
-      case 8:
-        return '<i class="huge suitcase icon"></i>';
-        break;
-      case 9:
-        return '<i class="huge save icon"></i>';
-        break;
-      case 10:
-        return '<i class="huge chess rook icon"></i>';
-        break;
-      case 11:
-        return '<i class="huge microchip icon"></i>';
+        subEDButtons(null,'modoMenuLivreOuRanqueado');
+        
+        $('#btnNovaFaseLivre').html('<i class="caret right icon"></i> Nova fase');
+        $('#btnNovaFaseRanqueado').html('<i class="caret right icon"></i> Nova fase');
+        $('#btnModoLivre').html('<i class="caret right icon"></i> Modo Livre');
         break;
     }
 }
@@ -270,29 +172,40 @@ function subIcon(ic){
 // - Timer
 function subRelogio(control){	
     switch (control){
-      case 'novo_jogo':
+      case 'novo_jogo_livre':
         if (seg > 0){
           seg = seg - 1;
-          $('#btnComecar').html('<i class="loading spinner icon"></i>Carregando...');
-          setTimeout('subRelogio("novo_jogo")', 1000);
+          subEDButtons('#btnModoLivre', 'addHtmlspinner');
+          subEDButtons('#btnModoLivre', 'addClassDisabled');
+          subEDButtons('#btnModoRanqueado', 'addClassDisabled');
+
+          setTimeout('subRelogio("novo_jogo_livre")', 1000);
         }else if (seg == 0){
-          resetGame('novo_jogo');
+          resetGame('novo_jogo_livre');
           novaFase();
-          $("#btnComecar").hide();
-          $('#btnComecar').html('<i class="caret right icon"></i> Começar');
+          subEDButtons(null, 'modoMenuFaseLivreOuSair');
+          subEDButtons('#btnNovaFaseLivre', 'addClassDisabled');
+          subEDButtons('#btnSairModo4', 'addClassDisabled');
+          $('#btnModoLivre').html('<i class="caret right icon"></i> Modo Livre');
+
           iniciar('mostrar_fase');
-          $("#btnExtra").show();
         }
         break;
-      case 'nova_fase':
+      case 'nova_fase_livre':
         if (seg > 0){
           seg = seg - 1;
-          $('#btnNovaFase').html('<i class="loading spinner icon"></i>Carregando...');
-          setTimeout('subRelogio("nova_fase")', 1000);
+          subEDButtons('#btnNovaFaseLivre', 'addHtmlspinner');
+          subEDButtons('#btnNovaFaseLivre', 'addClassDisabled');
+          subEDButtons('#btnSairModo4', 'addClassDisabled');
+          setTimeout('subRelogio("nova_fase_livre")', 1000);
         }else if (seg == 0){
-          resetGame('nova_fase');
+          resetGame('nova_fase_livre');
           novaFase();
-          $('#btnNovaFase').html('<i class="caret right icon"></i> Nova fase');
+          $('#btnNovaFaseLivre').html('<i class="caret right icon"></i> Nova fase');
+          subEDButtons(null, 'modoMenuFaseLivreOuSair');
+          subEDButtons('#btnNovaFaseLivre', 'addClassDisabled');
+          subEDButtons('#btnSairModo4', 'addClassDisabled');
+
           iniciar('mostrar_fase');
         }
         break;
@@ -308,6 +221,9 @@ function subRelogio(control){
           // - Ocultar fase e habilita os botoes.
           subEDButtons(null, 'allAddHtmlIconHuge')
           subEDButtons(null, 'allRemoveClassDisable')
+          subEDButtons('#btnNovaFaseLivre', 'removeClassDisable');
+          subEDButtons('#btnSairModo4', 'removeClassDisable');
+          
         }
         break;
     }
@@ -334,6 +250,9 @@ function subEDButtons(obj, func){
       case 'removeClassPositive':
         $(obj).removeClass('positive');
         break;
+      case 'addHtmlspinner':
+          $(obj).html('<i class="loading spinner icon"></i>Carregando...');
+          break;
       case 'addHtmlIconHuge':
         $(obj).html('<i class="huge icon"></i>');
         break;
@@ -341,6 +260,56 @@ function subEDButtons(obj, func){
         $('#btns button').each(function(index, element){ 
           $(element).removeClass('disabled');
         });
+        break;
+      case 'modoMenuLivreOuRanqueado':
+        $('#btnModoLR').show();
+        $('#btnModoRS').hide();
+        $('#btnModoVS').hide();
+        $('#btnModoLS').hide();
+        $('#btnModoFS').hide();
+
+        $('#btnModoLivre').removeClass('disabled');
+        $('#btnModoRanqueado').removeClass('disabled');
+        break;
+      case 'modoMenuFaseRanqueadaOuSair':
+        $('#btnModoLR').hide();
+        $('#btnModoRS').show();
+        $('#btnModoVS').hide();
+        $('#btnModoLS').hide();
+        $('#btnModoFS').hide();
+
+        $('#btnNovaFaseRanqueado').removeClass('disabled');
+        $('#btnSairModo1').removeClass('disabled');
+        break;
+      case 'modoMenuFaseVincularOuSair':
+        $('#btnModoLR').hide();
+        $('#btnModoRS').hide();
+        $('#btnModoVS').show();
+        $('#btnModoLS').hide();
+        $('#btnModoFS').hide();
+
+        $('#btnVincularRanqueado').removeClass('disabled');
+        $('#btnSairModo2').removeClass('disabled');
+        break;
+      case 'modoMenuLoginOuSair':
+        $('#btnModoLR').hide();
+        $('#btnModoRS').hide();
+        $('#btnModoVS').hide();
+        $('#btnModoLS').show();
+        $('#btnModoFS').hide();
+
+        $('#btnLoginModal2').removeClass('disabled');
+        $('#btnSairModo3').removeClass('disabled');
+        break;
+      case 'modoMenuFaseLivreOuSair':
+        $('#btnModoLR').hide();
+        $('#btnModoRS').hide();
+        $('#btnModoVS').hide();
+        $('#btnModoLS').hide();
+        $('#btnModoFS').show();
+
+        $('#btnNovaFaseLivre').removeClass('disabled');
+        $('#btnSairModo4').removeClass('disabled');
         break;
       case 'allAddClassDisable':
         $('#btns button').each(function(index, element){ 
@@ -369,4 +338,97 @@ function subEDButtons(obj, func){
         }
         break;
     }
+  }
+
+// - Criador de fase aleatória.
+function novaFase(){
+  // - Escolhe 6 icones aleatórios entre 10 tipos, duplica-os em um vetor do mapa.
+  var icone;
+  while (mapa.length < 11){
+    icone = Math.floor(Math.random() * 10);
+    if (mapa.indexOf(icone) == -1){
+      mapa.push(icone, icone);
+    }
+  }
+  
+  // - Permutar vetor do mapa.
+  shuffle(mapa);
+
+  function shuffle(array) {
+    var m = array.length, t, i;
+    while (m) {
+      i = Math.floor(Math.random() * m--);
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array;
+  }
+}
+
+// - Lista de icones.
+function subIcon(ic){
+  switch (ic){
+    case 0:
+      return '<i class="huge headphones icon"></i>';
+      break;
+    case 1:
+      return '<i class="huge rss square icon"></i>';
+      break;
+    case 2:
+      return '<i class="huge music icon"></i>';
+      break;
+    case 3:
+      return '<i class="huge video icon"></i>';
+      break;
+    case 4:
+      return '<i class="huge bullhorn icon"></i>';
+      break;
+    case 5:
+      return '<i class="huge coffee icon"></i>';
+      break;
+    case 6:
+      return '<i class="huge calculator icon"></i>';
+      break;
+    case 7:
+      return '<i class="huge book icon"></i>';
+      break;
+    case 8:
+      return '<i class="huge suitcase icon"></i>';
+      break;
+    case 9:
+      return '<i class="huge save icon"></i>';
+      break;
+    case 10:
+      return '<i class="huge chess rook icon"></i>';
+      break;
+    case 11:
+      return '<i class="huge microchip icon"></i>';
+      break;
+  }
+}
+
+// - Atualiza o bônus de pontos e front-end.
+function gameBonus(bn){
+  switch (bn) {
+    case 1:
+      $('#gameBonus').html('');
+      break;
+    case 2:
+      $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 2x" data-position="right center"><i class="smile outline icon"></i></i>');
+      break;
+    case 3:
+      $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 3x" data-position="right center"><i class="smile outline icon"></i></i>');
+      break;
+    case 4:
+      $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 4x" data-position="right center"><i class="smile outline icon"></i></i>');
+      break;
+    case 5:
+      $('#gameBonus').html('<i class="circular star icon link" data-tooltip="Bônus de 5x" data-position="right center"><i class="smile outline icon"></i></i>');
+      break;
+  
+    default:
+      bonus = bn;
+      break;
+  }
 }
