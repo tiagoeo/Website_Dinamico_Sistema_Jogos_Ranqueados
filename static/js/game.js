@@ -213,9 +213,9 @@ function resetGame(tp){
         // - Padrão botões do rodapé.
         subEDButtons(null,'modoMenuLivreOuRanqueado');
         
-        $('#btnNovaFaseLivre').html('<i class="caret right icon"></i> Nova fase');
-        $('#btnNovaFaseRanqueado').html('<i class="caret right icon"></i> Nova fase');
-        $('#btnModoLivre').html('<i class="caret right icon"></i> Modo Livre');
+        $('#btnNovaFaseLivre').html('<i class="redo icon"></i> Nova fase');
+        $('#btnNovaFaseRanqueado').html('<i class="redo icon"></i> Nova fase');
+        $('#btnModoLivre').html('<i class="coffee icon"></i> Modo Livre');
         break;
     }
 }
@@ -237,7 +237,7 @@ function subRelogio(control){
           subEDButtons(null, 'modoMenuFaseLivreOuSair');
           subEDButtons('#btnNovaFaseLivre', 'addClassDisabled');
           subEDButtons('#btnSairModo4', 'addClassDisabled');
-          $('#btnModoLivre').html('<i class="caret right icon"></i> Modo Livre');
+          $('#btnModoLivre').html('<i class="coffee icon"></i> Modo Livre');
 
           iniciar('mostrar_fase');
         }
@@ -256,7 +256,7 @@ function subRelogio(control){
           subEDButtons(null, 'modoMenuFaseRanqueadaOuSair');
           subEDButtons('#btnNovaFaseRanqueado', 'addClassDisabled');
           subEDButtons('#btnSairModo1', 'addClassDisabled');
-          $('#btnModoRanqueado').html('<i class="caret right icon"></i>Modo Ranqueado');
+          $('#btnModoRanqueado').html('<i class="chart line icon"></i>Modo Ranqueado');
 
           iniciar('mostrar_fase');
         }
@@ -271,7 +271,7 @@ function subRelogio(control){
         }else if (seg == 0){
           resetGame('nova_fase_livre');
           novaFase();
-          $('#btnNovaFaseLivre').html('<i class="caret right icon"></i> Nova fase');
+          $('#btnNovaFaseLivre').html('<i class="redo icon"></i> Nova fase');
           subEDButtons(null, 'modoMenuFaseLivreOuSair');
           subEDButtons('#btnNovaFaseLivre', 'addClassDisabled');
           subEDButtons('#btnSairModo4', 'addClassDisabled');
@@ -289,7 +289,7 @@ function subRelogio(control){
           }else if (seg == 0){
             resetGame('nova_fase_ranqueado');
             novaFase();
-            $('#btnNovaFaseRanqueado').html('<i class="caret right icon"></i> Nova Fase');
+            $('#btnNovaFaseRanqueado').html('<i class="redo icon"></i> Nova Fase');
             subEDButtons(null, 'modoMenuFaseRanqueadaOuSair');
             subEDButtons('#btnNovaFaseRanqueado', 'addClassDisabled');
             subEDButtons('#btnSairModo1', 'addClassDisabled');

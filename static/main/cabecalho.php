@@ -11,3 +11,4 @@
         <link rel="shortcut icon" href="#" />
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="static/css/main.css" />

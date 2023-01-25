@@ -15,7 +15,7 @@
 }
 
 /* Descrição */
-p{
+#lblSobre{
     text-indent: 20px;
     text-align: center;
     border:2px dotted rgb(71, 68, 68);
@@ -40,4 +40,5 @@ li{
 /* Rodape */
 #rodape{
     margin-top: 3em;
+    padding-bottom:3em;
 }

@@ -25,7 +25,7 @@
         <title> <?php echo $novoDadosPagina['nome']; ?> </title>
         <meta name="description" content="<?php echo $novoDadosPagina['descricao']; ?>">
         <meta name="keywords" content="<?php echo $novoDadosPagina['palavraschave']; ?>">
-        <link href="static/css/game.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="static/css/game.css">
         </head>
 
     <body>
@@ -35,110 +35,9 @@
         <!-- Main -->
         <main>
             <?php if ($novoDadosWebsite['manutencao'] != '1'): ?>
-                <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
-                    <!-- Minha conta -->		
-                    <div class="ui placeholder segment ui autumn leaf" id="uiMinhaConta">
-                        <div class="ui two column very relaxed stackable grid">
-                            <div class="column">
-                                <form class="ui form" id="formularioAlterarSenha">
-                                    <div class="field" id="fieldSenha1Atualizar">
-                                        <label>Nova senha</label>
-                                        <div class="ui left icon input disabled">
-                                            <input type="password" name="senha1Atualizar" id="senha1Atualizar">
-                                            <i class="lock icon"></i>
-                                        </div>
-                                        <div id="mensageSenha1Atualizar">
-                                        </div>
-                                    </div>
-                                    <div class="field" id="fieldSenha2Atualizar">
-                                        <label>Repetir nova senha</label>
-                                        <div class="ui left icon input disabled">
-                                            <input type="password" name="senha2Atualizar" id="senha2Atualizar">
-                                            <i class="lock icon"></i>
-                                        </div>
-                                        <div id="mensageSenha2Atualizar">
-                                        </div>
-                                        <div id="mensageSenhasAtualizar">
-                                        </div>
-                                    </div>
-                                    <div class="ui blue submit button disabled" id="btnSenhaAtualizar">
-                                        Atualizar
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="middle aligned column">
-                                <!-- Pontuações -->
-                                <p>Minhas pontuações</p>
-                                <div class="ui two column centered grid">
-                                    <div class="column">
-                                    <table class="ui attached table">
-                                        <thead>
-                                        <tr><th class="ten wide">Game</th>
-                                        <th class="six wide">Pontos</th>
-                                        </tr></thead>
-                                        <tbody id="minhasPontuacoes">
-                                        </tbody>
-                                        <tfoot id="meuTotalJogos">
-                                            <tr>
-                                                <th>Total de Jogos</th>
-                                                <th>0</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                    </div>
-                                </div>
-                                <!-- // Pontuações -->
-                            </div>
-                        </div>
-                        <div class="ui vertical divider"></div>
-                    </div>
-                    <!-- // Minha conta -->
-                <?php else: ?>
-                    <!-- Login -->		
-                    <div class="ui placeholder segment ui autumn leaf" id="uiLogin">
-                        <div class="ui two column very relaxed stackable grid">
-                            <div class="column">
-                                <form class="ui form" id="formularioLogin">
-                                    <div class="field" id="fieldUsuarioLogin">
-                                        <label>Usuário</label>
-                                        <div class="ui left icon input">
-                                            <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLogin">
-                                            <i class="user icon"></i>
-                                        </div>
-                                        <div id="mensageUsuarioLogin">
-                                        </div>
-                                    </div>
-                                    <div class="field" id="fieldSenhaLogin">
-                                        <label>Senha</label>
-                                        <div class="ui left icon input">
-                                            <input type="password" name="senhaLogin" id="senhaLogin">
-                                            <i class="lock icon"></i>
-                                        </div>
-                                        <div id="mensageSenhaLogin">
-                                        </div>
-                                        <div id="mensageLogin">
-                                        </div>
-                                    </div>
-                                    <div class="ui blue submit button" id="btnLogin">
-                                        <i class="sign-in icon"></i>
-                                        Login
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="middle aligned column">
-                                <div class="ui big button" id="btnCadastro">
-                                    <i class="signup icon"></i>
-                                    Cadastro
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="ui vertical divider">
-                            Ou
-                        </div>
-                    </div>
-                    <!-- // login -->
-                <?php endif; ?>
+                <!-- Minha conta -->	
+                <?php include_once(__DIR__.'/static/main/menu_conta.php');?>		
+                <!-- // Minha conta -->
 
                 <!-- GAME DA MEMÓRIA COM ICONES -->
                 <!-- Descrição -->
@@ -147,7 +46,7 @@
                         <div class="row">
                             <div class="eight wide column">
                                 <h3 class="ui header">Jogo da memória</h3>
-                                <p>Este é um jogo da memória com icones com código fonte aberto e livre, desenvolvido em HTML5, CSS3, Javascript, Semantic UI e JQuery.</p>
+                                <p id="lblSobre">Este é um jogo da memória com icones com código fonte aberto e livre, desenvolvido em HTML5, CSS3, Javascript, Semantic UI e JQuery.</p>
                                 <h3 class="ui header">Informações e regras</h3>
                                 <ul>
                                     <li>Os botões 'Começar' e 'Sair', resetam as pontos adquiridos;</li>
@@ -159,10 +58,7 @@
                                 </ul>
                             </div>
                             <div class="six wide right floated column">
-                                <div class="ui fade reveal image">
-                                    <img class="visible content" src="static/img/game_memoria.png" width="356" height="356">
-                                    <img class="hidden content" src="https://github.com/tiagoeo/tiagoeo/blob/main/img/game_memoria.gif" width="356" height="356">
-                                </div>
+                                <img class="visible content" src="static/img/game_memoria.png" width="356" height="356">
                             </div>
                         </div>
                     </div>
@@ -273,53 +169,61 @@
 
                 <!-- Rodapé Game -->
                 <div class="ui two column centered grid" id="rodape">
-                    <div class="ui massive buttons" id="btnModoLR">
+                    <div class="ui massive buttons disabled" id="btnModoLR">
                         <button class="ui button" id="btnModoLivre">
-                            <i class="caret right icon"></i>
+                            <i class="coffee icon"></i>
                             Modo Livre
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnModoRanqueado">
-                            <i class="caret right icon"></i>
+                            <i class="chart line icon"></i>
                             Modo Ranqueado
                         </button>
                     </div>
                     <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
-                    <div class="ui massive buttons" id="btnModoRS">
+                    <div class="ui massive buttons disabled" id="btnModoRS">
                         <button class="ui button" id="btnNovaFaseRanqueado">
+                            <i class="redo icon"></i>
                             Nova Fase
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnSairModo1">
+                            <i class="sign-out icon"></i>
                             Sair
                         </button>
                     </div>
                     <div class="ui massive buttons disabled" id="btnModoVS">
                         <button class="ui button" id="btnVincularRanqueado">
-                            Vincular Usuario
+                            <i class="linkify icon"></i>
+                            Vincular Game
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnSairModo2">
+                            <i class="sign-out icon"></i>
                             Sair
                         </button>
                     </div>
                     <?php else: ?>
-                    <div class="ui massive buttons" id="btnModoLS">
+                    <div class="ui massive buttons disabled" id="btnModoLS">
                         <button class="ui button" id="btnLoginModal2">
+                            <i class="user icon"></i>
                             Necessário Login
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnSairModo3">
+                            <i class="sign-out icon"></i>
                             Sair
                         </button>
                     </div>
                     <?php endif;?>
-                    <div class="ui massive buttons" id="btnModoFS">
+                    <div class="ui massive buttons disabled" id="btnModoFS">
                         <button class="ui button" id="btnNovaFaseLivre">
+                            <i class="redo icon"></i>
                             Nova fase
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnSairModo4">
+                            <i class="sign-out icon"></i>
                             Sair
                         </button>
                     </div>
@@ -352,6 +256,21 @@
             var pontosCarregados;
             subEDButtons(null, 'modoMenuLivreOuRanqueado');
 
+            $("#btnFooterQuemSomos").click(function(){
+                footerModal('<i class="user secret icon icon"></i>Quem somos','<p>Quem somos</p>');
+            });
+
+            $("#btnFooterContato").click(function(){
+                footerModal('<i class="phone icon"></i>Contato','<p><?php echo($novoDadosWebsite['telefone'])?></p>');
+            });
+
+            $("#btnFooterTermos").click(function(){
+                footerModal('<i class="paste icon"></i>Termos e condições','<p>Termos e condições</p>');
+            });
+
+            $("#btnFooterPoliticaPrivacidade").click(function(){
+                footerModal('<i class="file alternate icon"></i>Política de privacidade','<p>Política de privacidade</p>');
+            });
             
             $("#btnModoLivre").click(function(){
                 iniciar('novo_jogo_livre');
@@ -490,6 +409,12 @@
             $("#btnCadastrar").click(function(){
                 submitCadastrar();
 			});
+
+            function footerModal(titulo, descricao){
+                $("#footerModalTitulo").html(titulo);
+                $("#footerModalDescricao").html(descricao);
+                $("#footerModal").modal('show');
+            }
 
             function limparRegistros(){
                 $('#formularioCadastro').each (function(){
@@ -757,7 +682,7 @@
                             minhasPontuacoes = false;
                             $('#meuTotalJogos').html('<tr><th>Usuário sem games vinculados.</th></tr>');
                         }
-                        $('#btnModoRanqueado').html('Modo Ranqueado');
+                        $('#btnModoRanqueado').html('<i class="chart line icon"></i>Modo Ranqueado');
                         $('#btnModoRanqueado').removeClass('disabled');
                     },
                     beforeSend: function() { 
@@ -768,7 +693,7 @@
                     },
                     error: function(e) {
                         $('#meuTotalJogos').html('<tr><th>Erro: ao buscar informações.</th></tr>');
-                        $('#btnModoRanqueado').html('Modo Ranqueado');
+                        $('#btnModoRanqueado').html('<i class="chart line icon"></i>Modo Ranqueado');
                         $('#btnModoRanqueado').removeClass('disabled');
                     }
                 });
@@ -789,16 +714,16 @@
                         }else{
                             subEDButtons(null, 'modoMenuFaseVincularOuSair');
                         }
-                        $('#btnVincularRanqueado').html('Vincular Usuario');
+                        $('#btnVincularRanqueado').html('<i class="linkify icon"></i>Vincular Game');
                         $('#btnVincularRanqueado').removeClass('disabled');
                     },
                     beforeSend: function() { 
                         $('#btnVincularRanqueado').addClass('disabled');
-                        $('#btnVincularRanqueado').html('<i class="loading spinner icon"></i>Vincular Usuario');
+                        $('#btnVincularRanqueado').html('<i class="loading spinner icon"></i>Vincular Game');
                         
                     },
                     error: function(e) {
-                        $('#btnVincularRanqueado').html('Vincular Usuario');
+                        $('#btnVincularRanqueado').html('<i class="linkify icon"></i>Vincular Game');
                         $('#btnVincularRanqueado').removeClass('disabled');
                     }
                 });
@@ -816,7 +741,7 @@
                         if (retorno.atualizacao == true){
                             submitMinhasPontuacoes();
                         }
-                        $('#btnNovaFaseRanqueado').html('Nova Fase');
+                        $('#btnNovaFaseRanqueado').html('<i class="redo icon"></i>Nova Fase');
                         subEDButtons('#btnNovaFaseRanqueado', 'removeClassDisabled');
                         subEDButtons('#btnSairModo1', 'removeClassDisabled');
                     },
@@ -827,7 +752,7 @@
                         
                     },
                     error: function(e) {
-                        $('#btnNovaFaseRanqueado').html('<i class="caret right icon"></i> Nova Fase');
+                        $('#btnNovaFaseRanqueado').html('<i class="redo icon"></i> Nova Fase');
                         subEDButtons('#btnNovaFaseRanqueado', 'removeClassDisabled');
                         subEDButtons('#btnSairModo1', 'removeClassDisabled');
                     }

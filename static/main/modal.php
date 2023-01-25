@@ -49,15 +49,15 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui cancel button" onclick="limparRegistros();">Cancelar</div>
-        <div class="ui button" id="btnCadastrar">Cadastrar</div>
+        <div class="ui cancel button" onclick="limparRegistros();"><i class="close icon"></i>Cancelar</div>
+        <div class="ui button" id="btnCadastrar"><i class="edit icon"></i>Cadastrar</div>
       </div>
     </div>
 
     <div class="ui modal long" id="modalLogin">
       <i class="close icon"></i>
       <div class="header">
-        <i class="signup icon"></i>
+        <i class="user icon"></i>
         Login
       </div>
       <div class="description">
@@ -84,14 +84,20 @@
         </div>
       </div>
       <div class="actions">
-        <div class="ui cancel button" onclick="limparRegistros();">Cancelar</div>
-        <div class="ui button" id="btnLoginMenu">Login</div>
+        <div class="ui cancel button" onclick="limparRegistros();"><i class="close icon"></i>Cancelar</div>
+        <div class="ui button" id="btnLoginMenu"><i class="user icon"></i>Login</div>
       </div>
     </div>
 
-    <div class="ui modal" id="modalFooter">
-      <div class="header" id="modalFooterCabecalho">Quem Somos</div>
-      <div class="scrolling content" id="modalFooterConteudo">
-        <p>=)</p>
+    <div class="ui basic modal" id="footerModal">
+      <div class="ui icon header" id="footerModalTitulo">
+      </div>
+      <div class="content" id="footerModalDescricao">
+      </div>
+      <div class="actions">
+        <div class="ui green ok inverted button">
+          <i class="checkmark icon"></i>
+          OK
+        </div>
       </div>
     </div>

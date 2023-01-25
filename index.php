@@ -40,110 +40,9 @@
         <!-- Main -->
         <main>
             <?php if ($novoDadosWebsite['manutencao'] != '1'): ?>
-                <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
-                    <!-- Minha conta -->		
-                    <div class="ui placeholder segment ui autumn leaf" id="uiMinhaConta">
-                        <div class="ui two column very relaxed stackable grid">
-                            <div class="column">
-                                <form class="ui form" id="formularioAlterarSenha">
-                                    <div class="field" id="fieldSenha1Atualizar">
-                                        <label>Nova senha</label>
-                                        <div class="ui left icon input disabled">
-                                            <input type="password" name="senha1Atualizar" id="senha1Atualizar">
-                                            <i class="lock icon"></i>
-                                        </div>
-                                        <div id="mensageSenha1Atualizar">
-                                        </div>
-                                    </div>
-                                    <div class="field" id="fieldSenha2Atualizar">
-                                        <label>Repetir nova senha</label>
-                                        <div class="ui left icon input disabled">
-                                            <input type="password" name="senha2Atualizar" id="senha2Atualizar">
-                                            <i class="lock icon"></i>
-                                        </div>
-                                        <div id="mensageSenha2Atualizar">
-                                        </div>
-                                        <div id="mensageSenhasAtualizar">
-                                        </div>
-                                    </div>
-                                    <div class="ui blue submit button disabled" id="btnSenhaAtualizar">
-                                        Atualizar
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="middle aligned column">
-                                <!-- Pontuações -->
-                                <p>Minhas pontuações</p>
-                                <div class="ui two column centered grid">
-                                    <div class="column">
-                                    <table class="ui attached table">
-                                        <thead>
-                                        <tr><th class="ten wide">Game</th>
-                                        <th class="six wide">Pontos</th>
-                                        </tr></thead>
-                                        <tbody id="minhasPontuacoes">
-                                        </tbody>
-                                        <tfoot id="meuTotalJogos">
-                                            <tr>
-                                                <th>Total de Jogos</th>
-                                                <th>0</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                    </div>
-                                </div>
-                                <!-- // Pontuações -->
-                            </div>
-                        </div>
-                        <div class="ui vertical divider"></div>
-                    </div>
-                    <!-- // Minha conta -->
-                <?php else: ?>
-                    <!-- Login -->		
-                    <div class="ui placeholder segment ui autumn leaf" id="uiLogin">
-                        <div class="ui two column very relaxed stackable grid">
-                            <div class="column">
-                                <form class="ui form" id="formularioLogin">
-                                    <div class="field" id="fieldUsuarioLogin">
-                                        <label>Usuário</label>
-                                        <div class="ui left icon input">
-                                            <input type="text" placeholder="Usuário" name="usuarioLogin" id="usuarioLogin">
-                                            <i class="user icon"></i>
-                                        </div>
-                                        <div id="mensageUsuarioLogin">
-                                        </div>
-                                    </div>
-                                    <div class="field" id="fieldSenhaLogin">
-                                        <label>Senha</label>
-                                        <div class="ui left icon input">
-                                            <input type="password" name="senhaLogin" id="senhaLogin">
-                                            <i class="lock icon"></i>
-                                        </div>
-                                        <div id="mensageSenhaLogin">
-                                        </div>
-                                        <div id="mensageLogin">
-                                        </div>
-                                    </div>
-                                    <div class="ui blue submit button" id="btnLogin">
-                                        <i class="sign-in icon"></i>
-                                        Login
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="middle aligned column">
-                                <div class="ui big button" id="btnCadastro">
-                                    <i class="signup icon"></i>
-                                    Cadastro
-                                </div>
-                                
-                            </div>
-                        </div>
-                        <div class="ui vertical divider">
-                            Ou
-                        </div>
-                    </div>
-                    <!-- // login -->
-                <?php endif; ?>
+                <!-- Menu conta -->
+                <?php include_once(__DIR__.'/static/main/menu_conta.php');?>		
+                <!-- // Menu conta -->
 
                 <!-- Descrição Game -->
                 <?php if ($novoDadosGrid != false): ?>
@@ -157,7 +56,7 @@
                                     </div>
                                     <div class="eight wide right floated column"> 
                                         <!-- Classificação -->
-                                        <p>Classificação</p>
+                                        <p id="lblClassificacao"><i class="sort amount up icon"></i><b>Classificação</b></p>
                                         <div class="ui two column centered grid">
                                             <div class="column">
                                             <table class="ui attached table">
@@ -278,6 +177,22 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
         <script>
+            $("#btnFooterQuemSomos").click(function(){
+                footerModal('<i class="user secret icon icon"></i>Quem somos','<p>Quem somos</p>');
+            });
+
+            $("#btnFooterContato").click(function(){
+                footerModal('<i class="phone icon"></i>Contato','<p><?php echo($novoDadosWebsite['telefone'])?></p>');
+            });
+
+            $("#btnFooterTermos").click(function(){
+                footerModal('<i class="paste icon"></i>Termos e condições','<p>Termos e condições</p>');
+            });
+
+            $("#btnFooterPoliticaPrivacidade").click(function(){
+                footerModal('<i class="file alternate icon"></i>Política de privacidade','<p>Política de privacidade</p>');
+            });
+            
             $("#btnCadastro").click(function(){
                 limparRegistros();
                 $("#modalCadastro").modal('show');
@@ -299,6 +214,12 @@
             $("#btnCadastrar").click(function(){
                 submitCadastrar();
 			});
+
+            function footerModal(titulo, descricao){
+                $("#footerModalTitulo").html(titulo);
+                $("#footerModalDescricao").html(descricao);
+                $("#footerModal").modal('show');
+            }
 
             function limparRegistros(){
                 $('#formularioCadastro').each (function(){

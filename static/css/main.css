@@ -1,0 +1,56 @@
+/* Main Menu */
+#sessionNome{
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+#sessionEmail{
+    line-height: 0.6;
+    font-style: italic;
+}
+
+/* Classificação e Pontuações */
+tbody tr td {
+    text-transform: uppercase;
+}
+
+#lblClassificacao, #lblMinhasPontuacoes{
+    text-transform: uppercase;
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+}
+
+@media (max-width: 771px) {
+    #ou{
+        visibility: hidden;
+    }
+}
+
+/* Rodapé */
+.footer.segment {
+    position: absolute;
+    padding: 10em 0em;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (min-width: 320px) {
+    .footer.segment {
+        position: relative;
+        padding: 10em 0em;
+        padding-left: 0em;
+        padding-right: 0em;
+        box-sizing: inherit;
+    }
+} 
+
+@media (min-height: 891px){
+    .footer.segment {
+        position: relative;
+        padding: 10em 0em;
+        padding-left: 0em;
+        padding-right: 0em;
+        box-sizing: inherit;
+    }
+} 
