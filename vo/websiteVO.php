@@ -181,7 +181,7 @@
             try{
                 $novaAtualizacaoPontosDAO = new websiteDAO;
                 
-                $retornoNovaAtualizacaoPontosDAO = $novaAtualizacaoPontosDAO->atualizarPontosDAO($valorParam1, $valorParam2, $valorParam3, $valorParam4a);
+                $retornoNovaAtualizacaoPontosDAO = $novaAtualizacaoPontosDAO->atualizarPontosDAO($valorParam1, $valorParam2, $valorParam3, $valorParam4);
 
                 if ($retornoNovaAtualizacaoPontosDAO != false){
                     return $retornoNovaAtualizacaoPontosDAO;

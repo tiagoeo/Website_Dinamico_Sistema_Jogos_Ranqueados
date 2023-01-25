@@ -75,15 +75,25 @@ function game(jogada){
     $('#pontos').html(parseInt(pontos));
 }
 
-// - Inicializa nova fase ou um jogo novo.
 function iniciar(nf){
-    if (nf == 'novo_jogo_livre'){
+  switch (nf) {
+    case 'novo_jogo_livre':
       seg = 1;
       subRelogio(nf);
-    }else if (nf == 'nova_fase_livre'){
+      break;
+    case 'novo_jogo_ranqueado':
       seg = 1;
       subRelogio(nf);
-    }else if (nf == 'mostrar_fase'){
+      break;
+    case 'nova_fase_livre':
+      seg = 1;
+      subRelogio(nf);
+      break;
+    case 'nova_fase_ranqueado':
+      seg = 1;
+      subRelogio(nf);
+      break;
+    case 'mostrar_fase':
       if (pontos < 50){
         seg = 4;
         bonus = 5;
@@ -114,7 +124,8 @@ function iniciar(nf){
       }
       acertos = 0;
       subRelogio(nf);
-    }
+      break;
+  }
 }
 
 // - Reinicia front-end.
@@ -133,7 +144,31 @@ function resetGame(tp){
         subEDButtons(null, 'allAddClassDisable');
         subEDButtons(null, 'allAddHtmlIconHuge');
         subEDButtons(null, 'allRemoveClassPP');
+        break;
+      case 'novo_jogo_ranqueado':
+        // - Carregar pontos.
+        var totalBuscaJogos = Object.keys(minhasPontuacoes).length -1;
 
+        for(i = 0; i <= totalBuscaJogos; i++){
+            if (typeof minhasPontuacoes[i] !== 'undefined'){
+                if (minhasPontuacoes[i].idgame == 1){
+                    pontos = minhasPontuacoes[i].pontos;
+                    pontosCarregados = pontos;
+                    $('#pontos').html(parseInt(minhasPontuacoes[i].pontos));
+                    break;
+                }
+            }
+        }
+        erros = 0;
+        acertos = 0;
+        subEDButtons(null, 'resetClique');
+        $('#gameProgresso').progress('reset');
+
+        // - Padrão dos botões.
+        subEDButtons(null, 'allAddClassDisable');
+        subEDButtons(null, 'allAddHtmlIconHuge');
+        subEDButtons(null, 'allRemoveClassPP');
+        break;
       case 'nova_fase_livre':
         // - Limpar variáveis.
         erros = 0;
@@ -144,6 +179,22 @@ function resetGame(tp){
         subEDButtons(null, 'allAddClassDisable');
         subEDButtons(null, 'allAddHtmlIconHuge');
         subEDButtons(null, 'allRemoveClassPP');
+        break;
+      case 'nova_fase_ranqueado':
+        // - Limpar variáveis.
+        erros = 0;
+        subEDButtons(null, 'resetClique');
+        $('#gameProgresso').progress('reset');
+
+        // - Padrão dos botões.
+        subEDButtons(null, 'allAddClassDisable');
+        subEDButtons(null, 'allAddHtmlIconHuge');
+        subEDButtons(null, 'allRemoveClassPP');
+
+        //Salvar pontuações
+        if(pontosCarregados != pontos){
+          submitAtualizarPontosUsuario(1, pontos);
+        }
         break;
       case 'total':
         // - Limpar variáveis.
@@ -191,6 +242,25 @@ function subRelogio(control){
           iniciar('mostrar_fase');
         }
         break;
+      case 'novo_jogo_ranqueado':
+        if (seg > 0){
+          seg = seg - 1;
+          subEDButtons('#btnModoRanqueado', 'addHtmlspinner');
+          subEDButtons('#btnModoRanqueado', 'addClassDisabled');
+          subEDButtons('#btnModoLivre', 'addClassDisabled');
+
+          setTimeout('subRelogio("novo_jogo_ranqueado")', 1000);
+        }else if (seg == 0){
+          resetGame('novo_jogo_ranqueado');
+          novaFase();
+          subEDButtons(null, 'modoMenuFaseRanqueadaOuSair');
+          subEDButtons('#btnNovaFaseRanqueado', 'addClassDisabled');
+          subEDButtons('#btnSairModo1', 'addClassDisabled');
+          $('#btnModoRanqueado').html('<i class="caret right icon"></i>Modo Ranqueado');
+
+          iniciar('mostrar_fase');
+        }
+        break;
       case 'nova_fase_livre':
         if (seg > 0){
           seg = seg - 1;
@@ -209,6 +279,24 @@ function subRelogio(control){
           iniciar('mostrar_fase');
         }
         break;
+      case 'nova_fase_ranqueado':
+          if (seg > 0){
+            seg = seg - 1;
+            subEDButtons('#btnNovaFaseRanqueado', 'addHtmlspinner');
+            subEDButtons('#btnNovaFaseRanqueado', 'addClassDisabled');
+            subEDButtons('#btnSairModo1', 'addClassDisabled');
+            setTimeout('subRelogio("nova_fase_ranqueado")', 1000);
+          }else if (seg == 0){
+            resetGame('nova_fase_ranqueado');
+            novaFase();
+            $('#btnNovaFaseRanqueado').html('<i class="caret right icon"></i> Nova Fase');
+            subEDButtons(null, 'modoMenuFaseRanqueadaOuSair');
+            subEDButtons('#btnNovaFaseRanqueado', 'addClassDisabled');
+            subEDButtons('#btnSairModo1', 'addClassDisabled');
+  
+            iniciar('mostrar_fase');
+          }
+          break;
       case 'mostrar_fase':
         if (seg > 0){
           // - Mostra fase e desabilita os botoes.
@@ -222,6 +310,8 @@ function subRelogio(control){
           subEDButtons(null, 'allAddHtmlIconHuge')
           subEDButtons(null, 'allRemoveClassDisable')
           subEDButtons('#btnNovaFaseLivre', 'removeClassDisable');
+          subEDButtons('#btnNovaFaseRanqueado', 'removeClassDisable');
+          subEDButtons('#btnSairModo1', 'removeClassDisable');
           subEDButtons('#btnSairModo4', 'removeClassDisable');
           
         }

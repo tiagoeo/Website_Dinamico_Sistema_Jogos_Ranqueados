@@ -125,6 +125,7 @@
                                         </div>
                                     </div>
                                     <div class="ui blue submit button" id="btnLogin">
+                                        <i class="sign-in icon"></i>
                                         Login
                                     </div>
                                 </form>
@@ -165,19 +166,21 @@
                                                 <th class="six wide">Pontos</th>
                                                 </tr></thead>
                                                 <tbody>
-                                                    <?php $novoDadosRanque = $novoWebsiteVO->ranqueGeralVO($valor['titulo']); for ($i=0; $i < count($novoDadosRanque); $i++): ?>
-                                                        <?php if ($i < 3): ?>
-                                                        <tr>
-                                                            <td><?php echo $novoDadosRanque[$i]['nome'];?></td>
-                                                            <td><?php echo $novoDadosRanque[$i]['pontos'];?></td>
-                                                        </tr>
-                                                        <?php else: break; ?>
-                                                        <?php endif; ?>
-                                                    <?php endfor; ?>
+                                                    <?php $novoDadosRanque = $novoWebsiteVO->ranqueGeralVO($valor['titulo']); if ($novoDadosRanque != false): ?>
+                                                        <?php for ($i=0; $i < count($novoDadosRanque); $i++): ?>
+                                                            <?php if ($i < 3): ?>
+                                                            <tr>
+                                                                <td><?php echo $novoDadosRanque[$i]['nome'];?></td>
+                                                                <td><?php echo $novoDadosRanque[$i]['pontos'];?></td>
+                                                            </tr>
+                                                            <?php else: break; ?>
+                                                            <?php endif; ?>
+                                                        <?php endfor; ?>
+                                                    <?php endif; ?>
                                                 </tbody>
                                                 <tfoot>
                                                 <tr><th>Total de jogadores</th>
-                                                <th><?php echo count($novoDadosRanque);?></th>
+                                                <th><?php if ($novoDadosRanque != false){echo count($novoDadosRanque);}else{echo('0');}?></th>
                                                 </tr></tfoot>
                                             </table>
                                             </div>
@@ -539,7 +542,7 @@
 			}
 
             function submitMinhasPontuacoes() {
-                var dados = {"buscaPontuacoes": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['EMAIL']);} ?>'};
+                var dados = {"buscaPontuacoes": '<?php if (isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL'])){echo($_SESSION['EMAIL']);} ?>'};
                 $.ajax({ 
                     url: "transmitir.php",
                     data: dados,
@@ -549,11 +552,12 @@
                     success: function(retorno){
                         if (retorno.pontuacoes == true){
                             minhasPontuacoes = retorno;
-                            var totalJogos = Object.keys(retorno).length -1;
+                            var totalJogos = Object.keys(retorno).length-1;
 
+                            $('#minhasPontuacoes').html('');
                             for(i = 0; i <= totalJogos; i++){
                                 if (typeof retorno[i] !== 'undefined'){
-                                    $('#minhasPontuacoes').html('<tr><td>'+retorno[i].nome+'</td><td>'+retorno[i].pontos+'</td></tr>');
+                                    $('#minhasPontuacoes').append('<tr><td>'+retorno[i].nome+'</td><td>'+retorno[i].pontos+'</td></tr>');
                                 }
                             }
 

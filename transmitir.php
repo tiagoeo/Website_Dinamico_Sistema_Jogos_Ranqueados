@@ -154,6 +154,62 @@
                 echo($returnJsonPontuacoes);
                 exit();
             }
+        }else if(isset($_POST["uidusuariovincular"]) && !empty($_POST["uidusuariovincular"]) and isset($_POST["uidgamevincular"]) && !empty($_POST["uidgamevincular"])){
+			$novoVinculo = new websiteVO;
+            $uidUsuario = $_POST['uidusuariovincular'];
+            $uidGame = $_POST['uidgamevincular'];
+
+            $uidUsuario = preg_replace('/[^[:alnum:]_]/', '',$uidUsuario);
+            $uidGame = preg_replace('/[^[:alnum:]_]/', '',$uidGame);
+
+            $novoVinculoUsuarioGame;
+
+            switch ($uidGame) {
+                case 1:
+                    $novoVinculoUsuarioGame = $novoVinculo->vincularUsuarioGameVO($uidUsuario, $uidGame, 0 , '[0]');
+                    break;
+            }
+            
+
+            if ($novoVinculoUsuarioGame != false){    
+                $retornoJsonVinculo['vinculo'] = true;
+                $retornoJsonVinculo = json_encode($retornoJsonVinculo);
+                echo($retornoJsonVinculo);
+                exit();
+            }else{
+                $retornoJsonVinculo['vinculo'] = false;
+                $retornoJsonVinculo = json_encode($retornoJsonVinculo);
+                echo($retornoJsonVinculo);
+                exit();
+            }
+        }else if(isset($_POST["uidusuarioatualizar"]) && !empty($_POST["uidusuarioatualizar"]) and isset($_POST["uidgameatualizar"]) && !empty($_POST["uidgameatualizar"]) and isset($_POST["pontosatualizar"]) && !empty($_POST["pontosatualizar"])){
+			$novaAttPtsUsuario = new websiteVO;
+            $uidUsuario = $_POST['uidusuarioatualizar'];
+            $uidGame = $_POST['uidgameatualizar'];
+            $pontos = $_POST['pontosatualizar'];
+
+            $uidUsuario = preg_replace('/[^[:alnum:]_]/', '',$uidUsuario);
+            $uidGame = preg_replace('/[^[:alnum:]_]/', '',$uidGame);
+
+            $novaAttPtsUsuarioGame;
+
+            switch ($uidGame) {
+                case 1:
+                    $novaAttPtsUsuarioGame = $novaAttPtsUsuario->atualizarPontosVO($uidUsuario, $uidGame, $pontos, '['.$pontos.']');
+                    break;
+            }
+            
+            if ($novaAttPtsUsuarioGame != false){    
+                $retornoJsonAtualizacao['atualizacao'] = true;
+                $retornoJsonAtualizacao = json_encode($retornoJsonAtualizacao);
+                echo($retornoJsonAtualizacao);
+                exit();
+            }else{
+                $retornoJsonAtualizacao['atualizacao'] = false;
+                $retornoJsonAtualizacao = json_encode($retornoJsonAtualizacao);
+                echo($retornoJsonAtualizacao);
+                exit();
+            }
         }
     }else{
 		header("Location: index.php");

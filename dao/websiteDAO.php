@@ -376,7 +376,7 @@
 
                 $update = "UPDATE pontuacoes SET pontos = :param3, extras = :param4 WHERE idusuario = :param1 && idgame = :param2;";
 
-                $update = $this->pdo->prepare($pesquisar);
+                $update = $this->pdo->prepare($update);
 
                 $update->bindValue("param1", $valorParam1);
                 $update->bindValue("param2", $valorParam2);

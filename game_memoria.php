@@ -120,6 +120,7 @@
                                         </div>
                                     </div>
                                     <div class="ui blue submit button" id="btnLogin">
+                                        <i class="sign-in icon"></i>
                                         Login
                                     </div>
                                 </form>
@@ -274,10 +275,12 @@
                 <div class="ui two column centered grid" id="rodape">
                     <div class="ui massive buttons" id="btnModoLR">
                         <button class="ui button" id="btnModoLivre">
+                            <i class="caret right icon"></i>
                             Modo Livre
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnModoRanqueado">
+                            <i class="caret right icon"></i>
                             Modo Ranqueado
                         </button>
                     </div>
@@ -293,7 +296,7 @@
                     </div>
                     <div class="ui massive buttons disabled" id="btnModoVS">
                         <button class="ui button" id="btnVincularRanqueado">
-                            Vincular
+                            Vincular Usuario
                         </button>
                         <div class="or" data-text="ou"></div>
                         <button class="ui button" id="btnSairModo2">
@@ -311,10 +314,6 @@
                         </button>
                     </div>
                     <?php endif;?>
-                    <!-- <button class="ui massive labeled icon button" id="btnComecar">
-                        <i class="caret right icon"></i>
-                        Começar
-                    </button> -->
                     <div class="ui massive buttons" id="btnModoFS">
                         <button class="ui button" id="btnNovaFaseLivre">
                             Nova fase
@@ -350,6 +349,7 @@
         <script type="text/javascript" src="static/js/game.js"></script>
         <script>
             var minhasPontuacoes;
+            var pontosCarregados;
             subEDButtons(null, 'modoMenuLivreOuRanqueado');
 
             
@@ -358,7 +358,31 @@
             });
 
             $("#btnModoRanqueado").click(function(){
-                iniciar('novo_jogo_ranqueado');
+                <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
+                    submitMinhasPontuacoes();
+                    var todosJogos = Object.keys(minhasPontuacoes).length -1;
+
+                    if (todosJogos > 0){
+                        for(i = 0; i <= todosJogos; i++){
+                            if (typeof minhasPontuacoes[i] !== 'undefined'){
+                                if (minhasPontuacoes[i].idgame == 1){
+                                    iniciar('novo_jogo_ranqueado');
+                                    break;
+                                }else if(i == todosJogos){
+                                    subEDButtons(null, 'modoMenuFaseVincularOuSair');
+                                    break;
+                                }
+                            }else{
+                                subEDButtons(null, 'modoMenuFaseVincularOuSair');
+                            }
+                        }
+                    }else{
+                        console.log('vinculo3');
+                        subEDButtons(null, 'modoMenuFaseVincularOuSair');
+                    }
+                <?php else: ?>
+                    subEDButtons(null, 'modoMenuLoginOuSair');
+                <?php endif ?>
             });
 
             $("#btnNovaFaseLivre").click(function(){
@@ -369,10 +393,20 @@
                 iniciar('nova_fase_ranqueado');
             });
 
+            $("#btnVincularRanqueado").click(function(){
+                submitVincularUsuarioGame(1);
+            });
+
             $("#btnSairModo1").click(function(){
+                if(pontosCarregados != pontos){
+                    submitAtualizarPontosUsuario(1, pontos);
+                }
+                
+                submitMinhasPontuacoes();
                 resetGame('total');
             });
             $("#btnSairModo2").click(function(){
+                submitMinhasPontuacoes();
                 resetGame('total');
             });
             $("#btnSairModo3").click(function(){
@@ -440,10 +474,15 @@
                 $("#modalLogin").modal('show');
 			});
 
+            $("#btnLoginModal2").click(function(){
+                limparRegistros();
+                $("#modalLogin").modal('show');
+			});
+
             $("#btnLogin").click(function(){
                 submitLogin(1);
 			});
-
+          
             $("#btnLoginMenu").click(function(){
                 submitLogin(2);
 			});
@@ -694,7 +733,7 @@
 			}
 
             function submitMinhasPontuacoes() {
-                var dados = {"buscaPontuacoes": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['EMAIL']);} ?>'};
+                var dados = {"buscaPontuacoes": '<?php if (isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL'])){echo($_SESSION['EMAIL']);} ?>'};
                 $.ajax({ 
                     url: "transmitir.php",
                     data: dados,
@@ -704,28 +743,93 @@
                     success: function(retorno){
                         if (retorno.pontuacoes == true){
                             minhasPontuacoes = retorno;
-                            var totalJogos = Object.keys(retorno).length -1;
+                            var totalJogos = Object.keys(retorno).length-1;
 
+                            $('#minhasPontuacoes').html('');
                             for(i = 0; i <= totalJogos; i++){
                                 if (typeof retorno[i] !== 'undefined'){
-                                    $('#minhasPontuacoes').html('<tr><td>'+retorno[i].nome+'</td><td>'+retorno[i].pontos+'</td></tr>');
-                                    if (retorno[i].idgame == 1){
-                                        pontos = retorno[i].pontos;
-                                        $('#pontos').html(parseInt(retorno[i].pontos));
-                                    }
+                                    $('#minhasPontuacoes').append('<tr><td>'+retorno[i].nome+'</td><td>'+retorno[i].pontos+'</td></tr>');
                                 }
                             }
 
                             $('#meuTotalJogos').html('<tr><th>Total de Jogos</th><th>'+totalJogos+'</th></tr>');
                         }else{
-                            $('#meuTotalJogos').html('<tr><th>Falha ao buscar informações.</th></tr>');
+                            minhasPontuacoes = false;
+                            $('#meuTotalJogos').html('<tr><th>Usuário sem games vinculados.</th></tr>');
                         }
+                        $('#btnModoRanqueado').html('Modo Ranqueado');
+                        $('#btnModoRanqueado').removeClass('disabled');
                     },
                     beforeSend: function() { 
                         $('#minhasPontuacoes').html('<div class="ui active loader"></div>');
+                        $('#btnModoRanqueado').addClass('disabled');
+                        $('#btnModoRanqueado').html('<i class="loading spinner icon"></i>Modo Ranqueado');
+                        
                     },
                     error: function(e) {
                         $('#meuTotalJogos').html('<tr><th>Erro: ao buscar informações.</th></tr>');
+                        $('#btnModoRanqueado').html('Modo Ranqueado');
+                        $('#btnModoRanqueado').removeClass('disabled');
+                    }
+                });
+			}
+
+            function submitVincularUsuarioGame(uidgame) {
+                var dados = {"uidusuariovincular": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['UID']);} ?>', "uidgamevincular": uidgame};
+                $.ajax({ 
+                    url: "transmitir.php",
+                    data: dados,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function(retorno){
+                        if (retorno.vinculo == true){
+                            submitMinhasPontuacoes();
+                            subEDButtons(null, 'modoMenuFaseRanqueadaOuSair');
+                        }else{
+                            subEDButtons(null, 'modoMenuFaseVincularOuSair');
+                        }
+                        $('#btnVincularRanqueado').html('Vincular Usuario');
+                        $('#btnVincularRanqueado').removeClass('disabled');
+                    },
+                    beforeSend: function() { 
+                        $('#btnVincularRanqueado').addClass('disabled');
+                        $('#btnVincularRanqueado').html('<i class="loading spinner icon"></i>Vincular Usuario');
+                        
+                    },
+                    error: function(e) {
+                        $('#btnVincularRanqueado').html('Vincular Usuario');
+                        $('#btnVincularRanqueado').removeClass('disabled');
+                    }
+                });
+			}
+
+            function submitAtualizarPontosUsuario(uidgame, pontosUsuario) {
+                var dados = {"uidusuarioatualizar": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['UID']);} ?>', "uidgameatualizar": uidgame, "pontosatualizar": pontosUsuario};
+                $.ajax({ 
+                    url: "transmitir.php",
+                    data: dados,
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function(retorno){
+                        if (retorno.atualizacao == true){
+                            submitMinhasPontuacoes();
+                        }
+                        $('#btnNovaFaseRanqueado').html('Nova Fase');
+                        subEDButtons('#btnNovaFaseRanqueado', 'removeClassDisabled');
+                        subEDButtons('#btnSairModo1', 'removeClassDisabled');
+                    },
+                    beforeSend: function() { 
+                        subEDButtons('#btnNovaFaseRanqueado', 'addClassDisabled');
+                        subEDButtons('#btnSairModo1', 'addClassDisabled');
+                        $('#btnNovaFaseRanqueado').html('<i class="loading spinner icon"></i> Nova Fase');
+                        
+                    },
+                    error: function(e) {
+                        $('#btnNovaFaseRanqueado').html('<i class="caret right icon"></i> Nova Fase');
+                        subEDButtons('#btnNovaFaseRanqueado', 'removeClassDisabled');
+                        subEDButtons('#btnSairModo1', 'removeClassDisabled');
                     }
                 });
 			}
