@@ -22,9 +22,6 @@
         $novoDadosPagina = $novoWebsiteVO->dadosPaginaVO($pagina);
         $novoDadosGrid = $novoWebsiteVO->dadosGridVO(intval($novoDadosPagina['idpagina']));
     }
-
-
-
 ?>
         <?php include_once(__DIR__.'/static/main/cabecalho.php');?>
 
@@ -33,7 +30,7 @@
         <meta name="keywords" content="<?php echo $novoDadosPagina['palavraschave']; ?>">
         </head>
 
-    <body>
+    <body onLoad="testeJavascript();">
         <header>
             <?php include_once(__DIR__.'/static/main/menu.php');?>			
 		</header>
@@ -89,7 +86,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="center aligned column">
-                                        <a class="ui huge button" href="<?php echo $valor['botaoLink'];?>" ><?php echo $valor['botaoNome'];?></a>
+                                        <a class="ui huge button" href="<?php echo $valor['botaolink'];?>" ><?php echo $valor['botaonome'];?></a>
                                     </div>
                                 </div>
                             </div> 
@@ -99,14 +96,14 @@
                 <?php endif; ?>
                 <!-- // Descrição Game -->
             <?php else: ?>
-                <h2 class="ui center aligned icon header">
+                <h2 class="ui center aligned icon header" id="lblHeaderModoManutencao">
                     <i class="circular settings icon"></i>
                     Modo Manutenção
                 </h2>
 
                 <?php if ($testeDadosWebsite = $novoWebsiteVO->dadosWebsiteVO() != false):  ?>
                     <div class="ui grid center aligned">
-                        <div class="eight wide column">
+                        <div class="eight wide column" id="lblDescModoManutencao">
                             <div class="ui segment">
                             <p> Webite em manutenção - contate o administrador para mais informações.</p>
                             </div>
@@ -115,7 +112,7 @@
                 <?php else: ?>
                     <div class="ui grid center aligned">
                         <div class="eight wide column">
-                            <table class="ui celled table">
+                            <table class="ui celled table" id="lblTabelaModoManutencao">
                                 <thead>
                                     <tr>
                                         <th>Sevidor</th>
@@ -129,11 +126,11 @@
                                     </tr>
                                     <tr class="positive">
                                         <td>CSS3</td>
-                                        <td class="ui center aligned"><i class="icon checkmark"></i>OK</td>
+                                        <td class="ui center aligned" id="testeCSSModoManutencao"><i class="icon close"></i>Falha</td>
                                     </tr>
-                                    <tr class="positive">
+                                    <tr class="negative" id="testeJavascriptModoManutencao">
                                         <td>Javascript</td>
-                                        <td class="ui center aligned"><i class="icon checkmark"></i>OK</td>
+                                        <td class="ui center aligned"><i class="icon close"></i>Falha</td>
                                     </tr>
                                     <?php if ($testeDadosWebsite = $novoWebsiteVO->dadosWebsiteVO() == false):  ?>
                                     <tr class="negative">
@@ -409,10 +406,8 @@
                                 }else{
                                     $('#mensageLoginMenu').html('<div class="ui pointing label">Usuário ou senha incorretos</div>');
                                     $('#formularioLoginMenu').removeClass('loading');
-                                }
-                                
-                            }
-                            
+                                }   
+                            }     
 						},
 						beforeSend: function() { 
                             if (tipo == 1){
@@ -495,6 +490,12 @@
                     }
                 });
 			}
+
+            function testeJavascript(){
+                $('#testeJavascriptModoManutencao').removeClass('negative');
+                $('#testeJavascriptModoManutencao').addClass('positive');
+                $('#testeJavascriptModoManutencao').html('<td>Javascript</td><td class="ui center aligned"><i class="icon checkmark"></i>OK</td>');
+            }
 
             <?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID']) and isset($_SESSION['NOME']) && !empty($_SESSION['NOME']) and isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL']) and isset($_SESSION['STATUS']) && !empty($_SESSION['STATUS'])): ?>
             $(window).on("load", function() {

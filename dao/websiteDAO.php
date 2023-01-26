@@ -46,14 +46,14 @@
                                 USE `websitedinamicogamesdb`;                
                                 CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`website` (`idwebsite` INT NOT NULL AUTO_INCREMENT, `nome` VARCHAR(100) NULL, `telefone` VARCHAR(50) NULL, `manutencao` CHAR(1) NULL, PRIMARY KEY (`idwebsite`));
                                 CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`paginas` (`idpagina` INT NOT NULL AUTO_INCREMENT, `nome` VARCHAR(50) NULL, `descricao` VARCHAR(250) NULL, `palavraschave` VARCHAR(200) NULL, PRIMARY KEY (`idpagina`));
-                                CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`grids` (`idgrid` INT NOT NULL AUTO_INCREMENT, `idpagina` INT NULL, `titulo` VARCHAR(50) NULL, `descricao` TEXT(600) NULL, `img` VARCHAR(300) NULL, `botaoNome` VARCHAR(50) NULL, `botaoLink` VARCHAR(300) NULL, PRIMARY KEY (`idgrid`), INDEX `idpaginaref_idx` (`idpagina` ASC), CONSTRAINT `idpaginaref` FOREIGN KEY (`idpagina`) REFERENCES `websitedinamicogamesdb`.`paginas` (`idpagina`) ON DELETE CASCADE ON UPDATE CASCADE);
+                                CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`grids` (`idgrid` INT NOT NULL AUTO_INCREMENT, `idpagina` INT NULL, `titulo` VARCHAR(50) NULL, `descricao` TEXT(600) NULL, `img` VARCHAR(300) NULL, `botaonome` VARCHAR(50) NULL, `botaolink` VARCHAR(300) NULL, PRIMARY KEY (`idgrid`), INDEX `idpaginaref_idx` (`idpagina` ASC), CONSTRAINT `idpaginaref` FOREIGN KEY (`idpagina`) REFERENCES `websitedinamicogamesdb`.`paginas` (`idpagina`) ON DELETE CASCADE ON UPDATE CASCADE);
                                 CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`usuarios` (`idusuario` INT NOT NULL AUTO_INCREMENT, `nome` VARCHAR(50) NULL, `email` VARCHAR(256) NULL, `senha` VARCHAR(128) NULL, `situacao` CHAR(1) NULL, PRIMARY KEY (`idusuario`));
                                 CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`games` (`idgame` INT NOT NULL AUTO_INCREMENT, `nome` VARCHAR(50) NULL, `bonus` INT NULL, PRIMARY KEY (`idgame`));
                                 CREATE TABLE IF NOT EXISTS `websitedinamicogamesdb`.`pontuacoes` (`idpontuacoes` INT NOT NULL AUTO_INCREMENT, `idusuario` INT NULL, `idgame` INT NULL, `pontos` INT NULL, `extras` TEXT(500) NULL, PRIMARY KEY (`idpontuacoes`), INDEX `idusuarioref_idx` (`idusuario` ASC), INDEX `idgameref_idx` (`idgame` ASC), CONSTRAINT `idusuarioref` FOREIGN KEY (`idusuario`) REFERENCES `websitedinamicogamesdb`.`usuarios` (`idusuario`) ON DELETE CASCADE ON UPDATE CASCADE, CONSTRAINT `idgameref` FOREIGN KEY (`idgame`) REFERENCES `websitedinamicogamesdb`.`games` (`idgame`) ON DELETE CASCADE ON UPDATE CASCADE);
                                 INSERT INTO `websitedinamicogamesdb`.`website`(`nome`,`telefone`,`manutencao`) VALUES ('Website Dinamico com sistema de jogos ranqueados', 91999999999, 0);
                                 INSERT INTO `websitedinamicogamesdb`.`paginas`(`nome`,`descricao`,`palavraschave`) VALUES ('Website dinâmico com jogos ranqueados', 'Website dinâmico com sistema de jogo multiplataforma ranqueado', 'Website, Dinamico, jogo, game, multiplataforma, ranqueado');
                                 INSERT INTO `websitedinamicogamesdb`.`paginas`(`nome`,`descricao`,`palavraschave`) VALUES ('Jogo da memória com icones', 'Melhore a concentração, o raciocínio lógico e estimule a memória.', 'Jogo, mental, memorização, icones');
-                                INSERT INTO `websitedinamicogamesdb`.`grids` (`idpagina`, `titulo`, `descricao`, `img`, `botaoNome`, `botaoLink`) VALUES ('1', 'Game da memória com icones', 'Melhore a concentração, raciocínio lógico e estimule a sua memória', '/static/img/game_memoria.png', 'Acesso', 'game_memoria.php');
+                                INSERT INTO `websitedinamicogamesdb`.`grids` (`idpagina`, `titulo`, `descricao`, `img`, `botaonome`, `botaolink`) VALUES ('1', 'Game da memória com icones', 'Melhore a concentração, raciocínio lógico e estimule a sua memória', '/static/img/game_memoria.png', 'Acesso', 'game_memoria.php');
                                 INSERT INTO `websitedinamicogamesdb`.`usuarios` (`nome`, `email`, `senha`, `situacao`) VALUES ('admin', 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', '1');
                                 INSERT INTO `websitedinamicogamesdb`.`games` (`nome`, `bonus`) VALUES ('Game da memória com icones', '5');
                                 INSERT INTO `websitedinamicogamesdb`.`pontuacoes` (`idusuario`, `idgame`, `pontos`, `extras`) VALUES ('1', '1', '0', '[0]');";
@@ -135,7 +135,7 @@
                     return false;
                 }
 
-                $pesquisar = "SELECT grids.titulo, grids.descricao, grids.img, grids.botaoNome, grids.botaoLink FROM grids WHERE idpagina = :param1;";
+                $pesquisar = "SELECT grids.titulo, grids.descricao, grids.img, grids.botaonome, grids.botaolink FROM grids WHERE idpagina = :param1;";
 
                 $pesquisar = $this->pdo->prepare($pesquisar);
                 

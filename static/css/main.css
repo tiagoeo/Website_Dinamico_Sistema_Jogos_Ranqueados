@@ -27,6 +27,32 @@ tbody tr td {
     }
 }
 
+/* Modo Manutenção*/
+#lblHeaderModoManutencao{
+    margin-top: 5em;
+    margin-bottom: 2em;
+}
+
+#lblDescModoManutencao{
+    margin-top: 3em;
+    margin-bottom: 13em;
+}
+
+#lblTabelaModoManutencao{
+    margin-top: 3em;
+    margin-bottom: 5em; 
+}
+
+#testeCSSModoManutencao{
+    font-size: 0;
+    bottom:0;
+}
+
+#testeCSSModoManutencao::after{
+    content: "OK";
+    font-size: 16px !important;
+}
+
 /* Rodapé */
 .footer.segment {
     position: absolute;

@@ -25,7 +25,7 @@
         <title> <?php echo $novoDadosPagina['nome']; ?> </title>
         <meta name="description" content="<?php echo $novoDadosPagina['descricao']; ?>">
         <meta name="keywords" content="<?php echo $novoDadosPagina['palavraschave']; ?>">
-        <link rel="stylesheet" type="text/css" href="static/css/game.css">
+        <link rel="stylesheet" type="text/css" href="static/css/game_memoria.css">
         </head>
 
     <body>
@@ -46,10 +46,11 @@
                         <div class="row">
                             <div class="eight wide column">
                                 <h3 class="ui header">Jogo da memória</h3>
-                                <p id="lblSobre">Este é um jogo da memória com icones com código fonte aberto e livre, desenvolvido em HTML5, CSS3, Javascript, Semantic UI e JQuery.</p>
+                                <p id="lblSobre">Este é um jogo da memória com icones com código fonte aberto e livre, desenvolvido em PHP em POO e arquitetura MVC, HTML5, CSS3, Javascript, Semantic UI e JQuery com sincronizações AJAX.</p>
                                 <h3 class="ui header">Informações e regras</h3>
                                 <ul>
-                                    <li>Os botões 'Começar' e 'Sair', resetam as pontos adquiridos;</li>
+                                    <li>No 'Modo Livre' inicia o jogo sem a necessidade de logar, contudo não pontua no ranque do site;</li>
+                                    <li>Em 'Modo Ranqueado' é necessário login e criar um vinculo com o game, será carregado o jogo com a ultima pontuação salva, mantendo a dificuldade em relação ao pontos;</li>
                                     <li>O botão de 'Nova fase', cria um novo jogo e mantém os pontos atuais, mas caso pressionado antes de terminar a fase perde-se o bônus;</li>
                                     <li>Até 50 pontos, o tempo de memorizar os icones são de 4seg, bônus de 5 pontos em acertos sem erros, após o primeiro erro perde-se o bônus, mas não há penalidades em novos erros;</li>
                                     <li>A partir de 50 pontos, o bônus passa para 2 e o tempo para memorizar passa a 3seg, em caso de erro é perdido o bônus e descontado 1 ponto por cada erro;</li>
@@ -250,7 +251,7 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
-        <script type="text/javascript" src="static/js/game.js"></script>
+        <script type="text/javascript" src="static/js/game_memoria.js"></script>
         <script>
             var minhasPontuacoes;
             var pontosCarregados;
@@ -296,7 +297,6 @@
                             }
                         }
                     }else{
-                        console.log('vinculo3');
                         subEDButtons(null, 'modoMenuFaseVincularOuSair');
                     }
                 <?php else: ?>
@@ -324,13 +324,16 @@
                 submitMinhasPontuacoes();
                 resetGame('total');
             });
+
             $("#btnSairModo2").click(function(){
                 submitMinhasPontuacoes();
                 resetGame('total');
             });
+
             $("#btnSairModo3").click(function(){
                 resetGame('total');
             });
+
             $("#btnSairModo4").click(function(){
                 resetGame('total');
             });
