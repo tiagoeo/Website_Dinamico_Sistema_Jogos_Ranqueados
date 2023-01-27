@@ -43,12 +43,12 @@
 <p align="left">
   <ul>
     <li>No 'Modo Livre' inicia o jogo sem a necessidade de logar, contudo não pontua no ranque do site;</li>
-    <li>Em 'Modo Ranqueado' é necessário login e criar um vinculo com o game, será carregado o jogo com a ultima pontuação salva, mantendo a dificuldade em relação ao pontos;</li>
+    <li>Em 'Modo Ranqueado' é necessário login e criar um vinculo com o game, será carregado o jogo com a última pontuação salva, mantendo a dificuldade em relação ao pontos;</li>
     <li>O botão de 'Nova fase', cria um novo jogo e mantém os pontos atuais, mas caso pressionado antes de terminar a fase perde-se o bônus;</li>
-    <li>Até 50 pontos, o tempo de memorizar os icones são de 4seg, bônus de 5 pontos em acertos sem erros, após o primeiro erro perde-se o bônus, mas não há penalidades em novos erros;</li>
-    <li>A partir de 50 pontos, o bônus passa para 2 e o tempo para memorizar passa a 3seg, em caso de erro é perdido o bônus e descontado 1 ponto por cada erro;</li>
+    <li>Até 50 pontos, o tempo de memorizar os icones são de 4 seg, bônus de 5 pontos em acertos sem erros, após o primeiro erro perde-se o bônus, mas não há penalidades em novos erros;</li>
+    <li>A partir de 50 pontos, o bônus passa para 2 e o tempo para memorizar passa a 3 seg, em caso de erro é perdido o bônus e descontado 1 ponto por cada erro;</li>
     <li>Depois dos 100 pontos, não há bônus, erros passam a descontar 2 pontos;</li>
-    <li>Após 150 pontos, o tempo de memorizar é 2seg;</li>
+    <li>Após 150 pontos, o tempo de memorizar é 2 seg;</li>
   </ul>
 </p>
 
@@ -72,7 +72,7 @@
 <p align="left">
   <ul>
     <li>nome: O nome do jogo.</li>
-    <li>bonus: Controla o bônus do game que será multiplicado na pontuação do usuario.</li>
+    <li>bonus: Controla o bônus do game que será multiplicado na pontuação do usuário.</li>
   </ul>
 </p>
 <p align="center">
