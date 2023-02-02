@@ -733,7 +733,7 @@
 			}
 
             function submitAtualizarPontosUsuario(uidgame, pontosUsuario) {
-                var dados = {"uidusuarioatualizar": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['UID']);} ?>', "uidgameatualizar": uidgame, "pontosatualizar": pontosUsuario};
+                var dados = {"uidusuarioatualizar": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['UID']);} ?>', "uidgameatualizar": uidgame, "pontosatualizar": pontosUsuario, "extrasatualizar": '['+pontosUsuario+']'};
                 $.ajax({ 
                     url: "transmitir.php",
                     data: dados,

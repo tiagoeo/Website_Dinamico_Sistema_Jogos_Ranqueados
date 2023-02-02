@@ -312,11 +312,12 @@
                 echo($retornoJsonVinculo);
                 exit();
             }
-        }else if(isset($_POST["uidusuarioatualizar"]) && !empty($_POST["uidusuarioatualizar"]) and isset($_POST["uidgameatualizar"]) && !empty($_POST["uidgameatualizar"]) and isset($_POST["pontosatualizar"]) && !empty($_POST["pontosatualizar"])){
+        }else if(isset($_POST["uidusuarioatualizar"]) && !empty($_POST["uidusuarioatualizar"]) and isset($_POST["uidgameatualizar"]) && !empty($_POST["uidgameatualizar"]) and isset($_POST["pontosatualizar"]) && !empty($_POST["pontosatualizar"]) and isset($_POST["extrasatualizar"]) && !empty($_POST["extrasatualizar"])){
 			$novaAttPtsUsuario = new websiteVO;
             $uidUsuario = $_POST['uidusuarioatualizar'];
             $uidGame = $_POST['uidgameatualizar'];
             $pontos = $_POST['pontosatualizar'];
+            $extras = $_POST['extrasatualizar'];
 
             $uidUsuario = preg_replace('/[^[:alnum:]_]/', '',$uidUsuario);
             $uidGame = preg_replace('/[^[:alnum:]_]/', '',$uidGame);
@@ -325,7 +326,17 @@
 
             switch ($uidGame) {
                 case 1:
-                    $novaAttPtsUsuarioGame = $novaAttPtsUsuario->atualizarPontosVO($uidUsuario, $uidGame, $pontos, '['.$pontos.']');
+                    $novaAttPtsUsuarioGame = $novaAttPtsUsuario->atualizarPontosVO($uidUsuario, $uidGame, $pontos, $extras);
+                    break;
+                case 2:
+                    $novaAttPtsUsuarioGame = $novaAttPtsUsuario->atualizarPontosVO($uidUsuario, $uidGame, $pontos, $extras);
+                    break;
+
+                default:
+                    $retornoJsonAtualizacao['atualizacao'] = null;
+                    $retornoJsonAtualizacao = json_encode($retornoJsonAtualizacao);
+                    echo($retornoJsonAtualizacao);
+                    exit();
                     break;
             }
             
