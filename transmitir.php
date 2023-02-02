@@ -44,6 +44,67 @@
                 echo($returnNovoLogin);
                 exit();
             }
+        }else if(isset($_POST["usuarioAppLogin"]) && !empty($_POST["usuarioAppLogin"]) and isset($_POST["senhaAppLogin"]) && !empty($_POST["senhaAppLogin"]) and isset($_POST["appLogin"]) && !empty($_POST["appLogin"])){
+			$novoLogin = new websiteVO;
+            $novaBusca = new websiteVO;
+			
+			$usuario = $_POST['usuarioAppLogin'];
+			$senha = $_POST['senhaAppLogin'];
+            $uidGame = $_POST['appLogin'];
+
+            $usuario = filter_var($usuario, FILTER_SANITIZE_STRING);
+            $uidGame = preg_replace('/[^[:alnum:]_]/', '', $uidGame);
+
+            if(strlen($usuario) < 3){
+                $resultado['loginapp'] = null;
+                $resultado = json_encode($resultado);
+                echo($resultado);
+                exit();
+            }
+
+            if(strlen($senha) < 4){
+                $resultado['loginapp'] = null;
+                $resultado = json_encode($resultado);
+                echo($resultado);
+                exit();
+            }
+
+            $senha = md5($senha);
+
+            $novoLogin = $novoLogin->loginVO($usuario, $senha);
+
+            if($novoLogin){
+                $returnNovoLogin['UID'] = $novoLogin['idusuario'];
+                $returnNovoLogin['NOME'] = $novoLogin['nome'];
+                $returnNovoLogin['EMAIL'] = $novoLogin['email'];
+                $returnNovoLogin['STATUS'] = $novoLogin['situacao'];
+                $returnNovoLogin['loginapp'] = true;
+
+                $novaBuscaPontuacoes = $novaBusca->pontuacoesVO($novoLogin['email']);
+
+                $returnNovoLogin['pontuacoes'] = false;
+
+                if ($novaBuscaPontuacoes != false){   
+                    for ($i =0; $i < count($novaBuscaPontuacoes); $i++){
+                        if ($novaBuscaPontuacoes[$i]["idgame"] == $uidGame){
+                            $returnNovoLogin['GamePontos'] = $novaBuscaPontuacoes[$i]['pontos'];
+                            $returnNovoLogin['GameExtras'] = $novaBuscaPontuacoes[$i]['extras'];
+                            $returnNovoLogin['GameNome'] = $novaBuscaPontuacoes[$i]['nome'];
+                            $returnNovoLogin['GameBonus'] = $novaBuscaPontuacoes[$i]['bonus'];
+                            $returnNovoLogin['pontuacoes'] = true;
+                        }
+                    }
+                }
+
+                $returnNovoLogin = json_encode($returnNovoLogin);
+                echo($returnNovoLogin);
+                exit();
+            }else{
+                $returnNovoLogin['loginapp'] = false;
+                $returnNovoLogin = json_encode($returnNovoLogin);
+                echo($returnNovoLogin);
+                exit();
+            }
         }else if(isset($_POST["usuarioCadastro"]) && !empty($_POST["usuarioCadastro"]) and isset($_POST["emailCadastro"]) && !empty($_POST["emailCadastro"]) and isset($_POST["email2Cadastro"]) && !empty($_POST["email2Cadastro"]) and isset($_POST["senhaCadastro"]) && !empty($_POST["senhaCadastro"]) and isset($_POST["senha2Cadastro"]) && !empty($_POST["senha2Cadastro"])){
 			$novoCadastro = new websiteVO;
 			
@@ -154,30 +215,99 @@
                 echo($returnJsonPontuacoes);
                 exit();
             }
-        }else if(isset($_POST["uidusuariovincular"]) && !empty($_POST["uidusuariovincular"]) and isset($_POST["uidgamevincular"]) && !empty($_POST["uidgamevincular"])){
+        }else if(isset($_POST["buscaPontos"]) && !empty($_POST["buscaPontos"]) and isset($_POST["buscaAppLogin"]) && !empty($_POST["buscaAppLogin"])){
+			$novaBusca = new websiteVO;
+            $email = $_POST['buscaPontos'];
+            $uidGame = $_POST['buscaAppLogin'];
+
+            $uidGame = preg_replace('/[^[:alnum:]_]/', '', $uidGame);
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+                $resultado['pontuacoes'] = null;
+				$resultado = json_encode($resultado);
+				echo($resultado);
+				exit();
+			}
+
+            $novaBuscaPontuacoes = $novaBusca->pontuacoesVO($email);
+
+            $returnJsonPontuacoes['pontuacoes'] = false;
+
+            if ($novaBuscaPontuacoes != false){   
+                for ($i =0; $i < count($novaBuscaPontuacoes); $i++){
+                    if ($novaBuscaPontuacoes[$i]["idgame"] == $uidGame){
+                        $returnJsonPontuacoes['uid'] = $novaBuscaPontuacoes[$i]['idusuario'];
+                        $returnJsonPontuacoes['GamePontos'] = $novaBuscaPontuacoes[$i]['pontos'];
+                        $returnJsonPontuacoes['GameExtras'] = $novaBuscaPontuacoes[$i]['extras'];
+                        $returnJsonPontuacoes['GameNome'] = $novaBuscaPontuacoes[$i]['nome'];
+                        $returnJsonPontuacoes['GameBonus'] = $novaBuscaPontuacoes[$i]['bonus'];
+                        $returnJsonPontuacoes['pontuacoes'] = true;
+                        $returnJsonPontuacoes = json_encode($returnJsonPontuacoes);
+                        echo($returnJsonPontuacoes);
+                        exit();
+                    }
+                }
+            }else{
+                $returnJsonPontuacoes['pontuacoes'] = false;
+                $returnJsonPontuacoes = json_encode($returnJsonPontuacoes);
+                echo($returnJsonPontuacoes);
+                exit();
+            }
+        }else if(isset($_POST["uidusuariovincular"]) && !empty($_POST["uidusuariovincular"]) and isset($_POST["uidgamevincular"]) && !empty($_POST["uidgamevincular"])and isset($_POST["buscausuariovincular"]) && !empty($_POST["buscausuariovincular"])){
 			$novoVinculo = new websiteVO;
+            $novaBusca = new websiteVO;
+
             $uidUsuario = $_POST['uidusuariovincular'];
             $uidGame = $_POST['uidgamevincular'];
+            $email = $_POST["buscausuariovincular"];
 
             $uidUsuario = preg_replace('/[^[:alnum:]_]/', '',$uidUsuario);
             $uidGame = preg_replace('/[^[:alnum:]_]/', '',$uidGame);
 
+            $novaBuscaPontuacoes = $novaBusca->pontuacoesVO($email);
+
+            if ($novaBuscaPontuacoes != false){   
+                for ($i =0; $i < count($novaBuscaPontuacoes); $i++){
+                    if ($novaBuscaPontuacoes[$i]["idgame"] == $uidGame){
+                        $returnJsonPontuacoes['uid'] = $novaBuscaPontuacoes[$i]['idusuario'];
+                        $retornoJsonVinculo['GamePontos'] = $novaBuscaPontuacoes[$i]['pontos'];
+                        $retornoJsonVinculo['GameExtras'] = $novaBuscaPontuacoes[$i]['extras'];
+                        $retornoJsonVinculo['GameNome'] = $novaBuscaPontuacoes[$i]['nome'];
+                        $retornoJsonVinculo['GameBonus'] = $novaBuscaPontuacoes[$i]['bonus'];
+                        $retornoJsonVinculo['Vinculo'] = "existe";
+                        $retornoJsonVinculo = json_encode($retornoJsonVinculo);
+                        echo($retornoJsonVinculo);
+                        exit();
+                    }
+                }
+            }
+            
             $novoVinculoUsuarioGame;
 
             switch ($uidGame) {
                 case 1:
                     $novoVinculoUsuarioGame = $novoVinculo->vincularUsuarioGameVO($uidUsuario, $uidGame, 0 , '[0]');
                     break;
+                case 2:
+                    $novoVinculoUsuarioGame = $novoVinculo->vincularUsuarioGameVO($uidUsuario, $uidGame, 0 , '[0]');
+                    break;
+                default:
+                    $novoVinculoUsuarioGame = null;
+                    $retornoJsonVinculo['Vinculo'] = null;
+                    $retornoJsonVinculo = json_encode($retornoJsonVinculo);
+                    echo($retornoJsonVinculo);
+                    exit();
+                    break;
             }
             
 
             if ($novoVinculoUsuarioGame != false){    
-                $retornoJsonVinculo['vinculo'] = true;
+                $retornoJsonVinculo['Vinculo'] = true;
                 $retornoJsonVinculo = json_encode($retornoJsonVinculo);
                 echo($retornoJsonVinculo);
                 exit();
             }else{
-                $retornoJsonVinculo['vinculo'] = false;
+                $retornoJsonVinculo['Vinculo'] = false;
                 $retornoJsonVinculo = json_encode($retornoJsonVinculo);
                 echo($retornoJsonVinculo);
                 exit();

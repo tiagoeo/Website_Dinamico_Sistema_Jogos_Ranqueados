@@ -703,7 +703,7 @@
 			}
 
             function submitVincularUsuarioGame(uidgame) {
-                var dados = {"uidusuariovincular": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['UID']);} ?>', "uidgamevincular": uidgame};
+                var dados = {"uidusuariovincular": '<?php if (isset($_SESSION['UID']) && !empty($_SESSION['UID'])){echo($_SESSION['UID']);} ?>', "uidgamevincular": uidgame, "buscausuariovincular": '<?php if (isset($_SESSION['EMAIL']) && !empty($_SESSION['EMAIL'])){echo($_SESSION['EMAIL']);} ?>'};
                 $.ajax({ 
                     url: "transmitir.php",
                     data: dados,
