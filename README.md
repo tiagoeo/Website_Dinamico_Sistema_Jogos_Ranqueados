@@ -11,7 +11,7 @@
 <hr><h2 align="left">SOBRE</h2>
 
 <p align="left">
-  Esse sistema cadastra e efetua sessão de login via janela modal, informa em uma tabela os jogos e os pontos vinculados a conta. É possível jogar em "modo livre" sem possuir conta ou vinculo, também em "modo ranqueado" que dependendo do game o jogador pode ganhar ou perder pontos. Este trabalho é a junção dos projetos <a href="https://github.com/tiagoeo/website_dinamico_formulario_para_Whatsapp">website dinamico com formulario para Whatsapp</a> e do <a href="https://github.com/tiagoeo/website_game_memoria">jogo da memória com icones</a> (possui versão de "modo livre" disponível no <a href="https://tiagoeo.github.io/website_game_memoria/">github-pages</a>).
+  Esse sistema cadastra e efetua sessão de login via janela modal, informa em uma tabela os jogos e os pontos vinculados a conta. É possível jogar em "modo livre" sem possuir conta ou vinculo, também em "modo ranqueado" que dependendo do game o jogador pode ganhar ou perder pontos. Este trabalho é a junção dos projetos <a href="https://github.com/tiagoeo/website_dinamico_formulario_para_Whatsapp">website dinamico com formulario para Whatsapp</a> e do <a href="https://github.com/tiagoeo/website_game_memoria">jogo da memória com icones</a> (possui versão de "modo livre" disponível no <a href="https://tiagoeo.github.io/Website_Game_Memoria/">github-pages</a>).
 </p>
 <p align="center">
   <img src="https://github.com/tiagoeo/website_dinamico_sistema_jogo_ranqueado/blob/main/static/img/wsjr_usuario_logado.png" alt="Website usuário logado" height="444" width="435">
